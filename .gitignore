@@ -1,0 +1,22 @@
+# secrets: never commit
+.earthdata_token
+.earthdata_token.txt
+*.token
+.env
+
+# downloaded and processed data (re-created by the scripts, see README)
+sentinel2/
+bilder/
+bilder_old_area/
+data_extra_old_area/
+no2/
+data_extra/*
+!data_extra/boundary_A.geojson
+!data_extra/boundary_B.geojson
+!data_extra/boundary_A_auto.geojson
+!data_extra/boundary_B_auto.geojson
+
+# local leftovers
+*.log
+__pycache__/
+.claude/

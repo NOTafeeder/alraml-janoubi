@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="عمر حمامة">
+<title>الرمل الجنوبي – اللاذقية</title>
+<style>
+:root{
+  --bg:#f4f2ec; --card:#ffffff; --ink:#1c2126; --muted:#5b636c; --line:#e4dfd4;
+  --accent:#1d6a86; --accent-ink:#ffffff; --warn:#a4541a; --good:#2f7d3b; --bar:#3a86a8; --bar2:#a9cfdf;
+  --chip:#eef3f5; --hero1:#0f3b4c; --hero2:#1d6a86; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
+  --osm-bg:#f3efe6; --osm-bld:#b9a68f; --osm-road:#ffffff;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121518; --card:#1b1f24; --ink:#e7e9ec; --muted:#a2a9b1; --line:#2d333a;
+    --accent:#6cb6d4; --accent-ink:#0d1a20; --warn:#e3995c; --good:#77c084; --bar:#5aa9cc; --bar2:#2d5568; --chip:#232b33;
+    --hero1:#0b2530; --hero2:#134a5e; --shadow:none;
+    --osm-bg:#1b1f24; --osm-bld:#6b5d4f; --osm-road:#3a4048;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121518; --card:#1b1f24; --ink:#e7e9ec; --muted:#a2a9b1; --line:#2d333a;
+  --accent:#6cb6d4; --accent-ink:#0d1a20; --warn:#e3995c; --good:#77c084; --bar:#5aa9cc; --bar2:#2d5568; --chip:#232b33;
+  --hero1:#0b2530; --hero2:#134a5e; --shadow:none;
+  --osm-bg:#1b1f24; --osm-bld:#6b5d4f; --osm-road:#3a4048;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,"Noto Sans Arabic","Noto Naskh Arabic",Arial,sans-serif;line-height:1.75;font-size:16px}
+a{color:var(--accent)}
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:1100px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;height:56px}
+.brand{font-weight:700;white-space:nowrap;color:var(--ink);text-decoration:none}
+.nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{white-space:nowrap;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:999px;font-size:.92rem}
+.nav a:hover{background:var(--chip);color:var(--ink)}
+.nav a.on{background:var(--accent);color:var(--accent-ink)}
+.iconbtn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;width:36px;height:36px;cursor:pointer;font-size:1rem;flex:none}
+/* hero */
+.hero{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff}
+.hero .in{max-width:1100px;margin:0 auto;padding:36px 16px 28px}
+.hero h1{font-size:2.3rem;margin:0 0 6px;line-height:1.3}
+.hero p{margin:0;max-width:760px;opacity:.9}
+.hero .byline{margin:0 0 10px;font-size:.95rem;opacity:.85}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px;margin-top:22px}
+.fact{display:block;text-decoration:none;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 14px;transition:background .15s}
+.fact:hover{background:rgba(255,255,255,.18)}
+.fact b{display:block;font-size:1.5rem;line-height:1.3;font-variant-numeric:tabular-nums}
+.fact span{font-size:.82rem;opacity:.85}
+.hero small{display:block;margin-top:14px;opacity:.75;font-size:.82rem}
+/* content */
+main{max-width:1100px;margin:0 auto;padding:8px 16px 72px}
+.tabpanel[hidden]{display:none}
+.group{display:flex;align-items:center;gap:12px;margin:26px 0 4px;font-size:.95rem;color:var(--muted);font-weight:600;letter-spacing:.02em}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
+.group i{font-style:normal;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.8rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:14px 0;box-shadow:var(--shadow)}
+.card[hidden]{display:none}
+h2{font-size:1.35rem;margin:0 0 10px;color:var(--ink);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+h3{font-size:1rem;margin:20px 0 6px;color:var(--muted)}
+p{margin:8px 0}
+.sub{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.stat{background:var(--chip);border-radius:12px;padding:12px 14px;border-inline-start:3px solid var(--accent)}
+.stat b{display:block;font-size:1.4rem;line-height:1.35;font-variant-numeric:tabular-nums}
+.stat span{font-size:.84rem;color:var(--muted)}
+.conf{display:inline-block;font-size:.76rem;font-weight:600;padding:2px 10px;border-radius:999px;background:var(--chip);margin-inline-start:6px;vertical-align:middle;line-height:1.6}
+.conf.low{color:var(--warn)} .conf.mid{color:var(--accent)} .conf.high{color:var(--good)}
+h2 .conf{margin:0;font-size:.72rem}
+details.basis{margin-top:16px;border-top:1px dashed var(--line);padding-top:10px;font-size:.88rem;color:var(--muted)}
+details.basis summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--ink);font-weight:600;font-size:.88rem}
+details.basis summary::-webkit-details-marker{display:none}
+details.basis summary::before{content:"▸";color:var(--muted);transition:transform .15s}
+details.basis[open] summary::before{transform:rotate(-90deg)}
+details.basis .body{margin-top:8px}
+.mapwrap{position:relative;width:100%;aspect-ratio:__W__/__H__;background:#000;border-radius:12px;overflow:hidden}
+.mapwrap img{width:100%;height:100%;image-rendering:pixelated;display:block}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+.controls button{font:inherit;font-size:.9rem;border:0;background:transparent;color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
+.controls button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.controls b{font-variant-numeric:tabular-nums;min-width:3.5em}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
+.legend[hidden]{display:none}
+.legend{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:.84rem;color:var(--muted);margin-top:8px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-inline-end:5px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:start;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.85rem}
+svg{direction:ltr}
+svg text{fill:var(--muted);font-size:11px}
+ul{margin:6px 0;padding-inline-start:22px}
+li{margin:3px 0}
+.src{font-size:.85rem;columns:2 360px;column-gap:28px}
+.src li{word-break:break-word;break-inside:avoid}
+.hood-ol{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.hood-ol path,.hood-ol-osm{fill:rgba(255,77,109,.06);stroke:#ff4d6d;stroke-width:2.5;vector-effect:non-scaling-stroke;stroke-linejoin:round;pointer-events:none}
+.osm-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 22px}
+.osm-group h4{margin:10px 0 4px;font-size:.95rem;display:flex;align-items:center;gap:4px}
+.osm-group h4 span{color:var(--muted);font-weight:400}
+.osm-group ol{margin:0;padding-inline-start:30px;font-size:.9rem}
+.osm-group li{cursor:pointer;border-radius:6px;padding:1px 6px;margin:1px 0}
+.osm-group li small{color:var(--muted)}
+.osm-group li.unnamed{color:var(--muted)}
+.osm-group .where{display:block;font-size:.8rem;color:var(--muted);line-height:1.5;margin-bottom:3px}
+.osm-group .where a{font-size:.78rem}
+.osm-group li.hl,.osm-group li:hover{background:var(--chip)}
+#osmWrap .poi{cursor:pointer;outline:none}
+#osmWrap .poi.hl circle{r:13;stroke:#000;stroke-width:2.5}
+#osmWrap .poi.hl text{font-size:12px}
+.osm-tip{position:absolute;transform:translate(-50%,-150%);background:var(--ink);color:var(--card);padding:3px 10px;border-radius:8px;font-size:.85rem;white-space:nowrap;pointer-events:none;z-index:2}
+.osm-tip[hidden]{display:none}
+.note{background:var(--chip);border-radius:10px;padding:10px 14px;font-size:.92rem}
+.totop{position:fixed;inset-inline-end:16px;bottom:16px;z-index:15;opacity:0;pointer-events:none;transition:opacity .2s}
+.totop.show{opacity:1;pointer-events:auto}
+footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:.85rem}
+@media (max-width:640px){
+  .hero h1{font-size:1.7rem}.hero .in{padding:26px 16px 22px}
+  .card{padding:16px;border-radius:14px}.brand{display:none}
+  .fact b{font-size:1.25rem}
+}
+@media print{.topbar,.totop,.controls input{display:none}.card{break-inside:avoid;box-shadow:none}details.basis{display:block}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a class="brand" href="#g-overview">الرمل الجنوبي</a>
+  <nav class="nav" id="nav" role="tablist" aria-label="أقسام الصفحة"><a role="tab" href="#g-overview">نظرة عامة</a><a role="tab" href="#g-sky">الحي من الأعلى</a><a role="tab" href="#g-urban">العمران والسكان</a><a role="tab" href="#g-climate">المناخ</a><a role="tab" href="#g-env">الهواء والنشاط</a><a role="tab" href="#g-risk">المخاطر</a><a role="tab" href="#g-src">المصادر</a></nav>
+  <button class="iconbtn" id="theme" title="الوضع الفاتح أو الداكن" aria-label="تبديل الوضع الفاتح والداكن">◐</button>
+</div></div>
+<div class="hero tabpanel" id="g-overview" role="tabpanel"><div class="in">
+  <h1>الرمل الجنوبي – اللاذقية</h1>
+  <p class="byline">إعداد وتصميم: <b>عمر حمامة</b></p>
+  <p>دراسة للحي من بيانات الأقمار الصناعية والبيانات المفتوحة: العمران والسكان، المناخ، الهواء، الإضاءة الليلية والمخاطر. كل قسم يذكر مصدره ومدى الثقة به.</p>
+  <div class="facts" id="facts"></div>
+  <small>أرقام السكان والكثافة والعمران والارتفاع هنا لحي الرمل الجنوبي داخل حدوده (دون حي القدس)؛ الأرقام الأخرى لمحيط الحي كما يذكر كل قسم. اضغط على أي رقم لفتح قسمه، أو اختر تبويباً من الشريط في الأعلى.</small>
+</div></div>
+<main>
+
+<div class="tabpanel" id="g-sky" role="tabpanel"><div class="group"><i>1</i>الحي من الأعلى</div>
+
+<section class="card" id="hood">
+  <h2>الحي داخل حدوده</h2>
+  <p>كل الأرقام هنا محسوبة <b>داخل حدود الرمل الجنوبي</b> فقط، على اليابسة، ومقارنة بمنطقة الدراسة كلها. الحدود مرسومة باللون الأحمر على كل خرائط الصفحة.</p>
+  <div class="controls"><span class="seg"><button id="hvA" aria-pressed="true">دون حي القدس</button><button id="hvB" aria-pressed="false">مع حي القدس (تقريبي)</button></span></div>
+  <div class="grid" id="hoodStats"></div>
+  <table id="hoodTable" style="margin-top:14px"><thead><tr><th>المقياس</th><th>داخل الحي</th><th>منطقة الدراسة كلها</th></tr></thead><tbody></tbody></table>
+  <div class="basis">كيف رُسمت الحدود: من وصفك. <b>الشمال الغربي: السكة الحديد</b> (من OpenStreetMap)، وهي تصل إلى الشاطئ عند طرف شارع العروبة؛ <b>الشرق: الطريق المتجه جنوباً</b> حتى <b>مصب نهر الكبير الشمالي</b>؛ <b>الجنوب: البحر</b>. نسخة «مع حي القدس» تمدّ الحد الشرقي إلى الطريق التالي شرقاً (خط طول 35.8177° تقريباً) ومجرى النهر جنوباً، كما يظهر في صورة آب 2026؛ لا نعرف أين ينتهي حي القدس فعلاً، فهي تقريبية. الحدود ليست رسمية؛ لا توجد حدود أحياء منشورة لهذه المنطقة. الإضاءة الليلية خلاياها 500 م، فقيمتها للحي تشمل أطرافاً من الأحياء المجاورة.<span class="conf mid">ثقة متوسطة في الحدود</span></div>
+</section>
+
+<section class="card" id="map">
+  <h2>الحي من القمر الصناعي</h2>
+  <div class="controls">
+    <span class="seg"><button id="bRgb" aria-pressed="true">ألوان حقيقية</button>
+    <button id="bNdvi" aria-pressed="false">مؤشر النبات NDVI</button>
+    <button id="bTurb" aria-pressed="false">تعكّر البحر</button></span>
+    <input type="range" id="yr" min="0" step="1" aria-label="السنة">
+    <b id="yrLabel"></b>
+  </div>
+  <div class="mapwrap"><img id="img" alt="صورة القمر الصناعي للرمل الجنوبي"></div>
+  <div class="legend" id="legNdvi" hidden>
+    <span><i class="sw" style="background:#8c5a32"></i>مبانٍ وأرض جرداء</span>
+    <span><i class="sw" style="background:#ebe1a0"></i>نبات قليل</span>
+    <span><i class="sw" style="background:#147828"></i>نبات كثيف</span>
+    <span><i class="sw" style="background:#28468c"></i>ماء</span>
+  </div>
+  <div class="legend" id="legTurb" hidden>
+    <span style="display:inline-block;width:150px;height:12px;border-radius:3px;background:linear-gradient(to left,#14286e,#2878aa,#78bea0,#e6c85a,#aa6428)"></span>
+    <span>ماء صافٍ ← ماء عكر (انعكاس الأحمر 0 ← 5٪)</span><span><i class="sw" style="background:#999"></i>يابسة</span>
+  </div>
+  <p class="sub" id="turbNote" hidden>تعكّر البحر: كلما زاد انعكاس اللون الأحمر من الماء زادت المواد العالقة فيه (طمي النهر، مياه الصرف، رمل تثيره الأمواج). لمعان الشمس على الأمواج قد يرفع القيم، فقارن الأماكن في الصورة نفسها، لا السنوات. النقاط الملوّنة الصغيرة على اليابسة أسطح داكنة صُنّفت خطأً كماء.<span class="conf mid">ثقة متوسطة</span></p>
+  <p class="sub" id="sceneInfo"></p>
+  <div class="basis">يبني على: صور Sentinel-2 L2A (وكالة الفضاء الأوروبية، عبر فهرس Element 84 على AWS)، صورة واحدة لكل سنة بين أيار وأيلول بأقل غيوم. الدقة 10 م للبكسل: تظهر الأحياء والطرق الكبيرة والمساحات الخضراء، لا المباني المفردة. المنطقة نحو 4.5 × 2.9 كم، شمالها في الأعلى.<span class="conf high">ثقة عالية في الصورة</span></div>
+</section>
+
+<section class="card" id="land">
+  <h2>ما تقوله الصور: المبني والأخضر عبر السنين</h2>
+  <div class="grid" id="landStats"></div>
+  <h3>نسبة الأرض الخضراء من اليابسة في الصورة</h3>
+  <svg id="vegChart" viewBox="0 0 640 220" width="100%" role="img" aria-label="نسبة الأرض الخضراء لكل سنة"></svg>
+  <div class="basis">كيف حُسب: لكل بكسل يابسة حسبنا NDVI = (NIR − أحمر) / (NIR + أحمر). أكثر من 0.3 يُعدّ «أخضر»، وما تحته «مبانٍ أو أرض جرداء». الماء يُستبعد أولاً. الحساب لكل منطقة الصورة (تشمل أراضي زراعية شرق النهر)، لا لحدود الحي الإدارية. التاريخ يختلف بين السنوات (أيار–أيلول)، فجزء من الفرق موسمي وليس تغيّراً حقيقياً. في أغلب السنوات النسبة بين 38 و41٪ تقريباً، ولا نرى اتجاهاً واضحاً. 2020 أعلى (صورة أيار، حين تكون المحاصيل خضراء) و2017 أقل؛ لم نتحقق إن كان ذلك تغيّراً فعلياً في الأرض أم أثر التاريخ والطقس. الماء محدّد بانعكاس منخفض جداً للأشعة تحت الحمراء (NIR أقل من 0.06).<span class="conf mid">ثقة متوسطة</span></div>
+</section>
+
+</div>
+
+<div class="tabpanel" id="g-urban" role="tabpanel"><div class="group"><i>2</i>العمران والسكان</div>
+
+<section class="card" id="growth">
+  <h2>توسّع العمران والسكان</h2>
+  <div class="grid" id="growthStats"></div>
+  <h3>مساحة الأسطح المبنية في منطقة الصورة</h3>
+  <svg id="builtChart" viewBox="0 0 640 220" width="100%" role="img" aria-label="مساحة البناء عبر السنين"></svg>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+    <div>
+      <h3>متى بُنيت كل منطقة (أول فترة تجاوز فيها البناء 20٪ من الخلية)</h3>
+      <div class="mapwrap" id="builtWrap"><img id="builtImg" alt="عمر البناء"></div>
+      <div class="legend" id="builtLegend"></div>
+    </div>
+    <div>
+      <h3>كثافة السكان المقدّرة، <span id="popYear"></span></h3>
+      <div class="mapwrap" id="popWrap"><img id="popImg" alt="كثافة السكان"></div>
+      <div class="legend"><span style="display:inline-block;width:140px;height:12px;border-radius:3px;background:linear-gradient(to left,#fff7d6,#fdc470,#ec7034,#b42828,#640a28)"></span><span id="popScale"></span></div>
+    </div>
+  </div>
+  <div class="basis">يبني على: طبقة المستوطنات البشرية GHSL (مركز الأبحاث المشترك الأوروبي JRC، إصدار R2023A) لمساحة البناء، بدقة نحو 90 م؛ قيمة 2025 فيها إسقاط من النموذج لا رصد. وتقديرات WorldPop (جامعة ساوثهامبتون، إصدار R2025A، «مقيّدة» بالمباني) للسكان بدقة 100 م. أرقام السكان <b>تقديرات نموذج</b> توزّع أرقام السكان الوطنية على المباني؛ لا يوجد تعداد حديث في سوريا، والنزوح لا يظهر فيها جيداً، والقفزة بين 2020 و2025 قد تعكس تغيّر مدخلات النموذج أكثر من تغيّر حقيقي.<span class="conf high">ثقة عالية في البناء حتى 2020</span><span class="conf mid">متوسطة في أرقام السكان</span></div>
+</section>
+
+<section class="card" id="osm">
+  <h2>المباني والطرق والمرافق</h2>
+  <div class="grid" id="osmStats"></div>
+  <div style="position:relative;margin-top:10px" id="osmWrap"></div>
+  <div class="legend" style="margin-top:6px">
+    <span><i class="sw" style="background:#2b6cb0;border-radius:50%"></i>تعليم</span>
+    <span><i class="sw" style="background:#c53030;border-radius:50%"></i>صحة وصيدليات</span>
+    <span><i class="sw" style="background:#805ad5;border-radius:50%"></i>دور عبادة</span>
+    <span><i class="sw" style="background:#2f855a;border-radius:50%"></i>حدائق وملاعب</span>
+    <span><i class="sw" style="background:#111;border-radius:50%"></i>إطفاء وشرطة</span>
+  </div>
+  <h3>المرافق بالاسم</h3>
+  <p class="sub">مرّر المؤشر أو اضغط على اسم لترى مكانه على الخريطة، والعكس. الأرقام نفسها على الخريطة وفي القائمة. للمرافق التي لا اسم لها في الخريطة نذكر أقرب شارعين مسمّيين وأقرب مرفق معروف، لتسهيل السؤال عنها؛ هذا وصف للمكان لا اسم المرفق. لا توجد في OpenStreetMap حدود أحياء داخل المدينة هنا، فلا نذكر اسم الحي. إن عرفت الاسم، أضفه عبر رابط «افتحه في OpenStreetMap» ثم أعد تشغيل <code>extra/osm.py</code> و<code>build_page.py</code>.</p>
+  <div id="osmList" class="osm-list"></div>
+  <div class="basis">يبني على: OpenStreetMap، خريطة يرسمها متطوعون (© مساهمو OpenStreetMap، ترخيص ODbL)، نسخة <span id="osmTime"></span>. ما هو مرسوم موثوق في الغالب، لكن الخريطة قد تكون <b>ناقصة</b>: غياب مرفق عنها لا يعني أنه غير موجود. الأسماء كما كتبها المتطوعون (أُبقي الجزء العربي من الأسماء المكتوبة بلغتين)، وقد تكون فيها أخطاء أو أسماء قديمة؛ المكان المرسوم مرتين (نقطة ومبنى) يظهر مرة واحدة.<span class="conf mid">ثقة متوسطة – قد تكون ناقصة</span></div>
+</section>
+
+<section class="card" id="elev">
+  <h2>الارتفاع عن سطح البحر والتعرّض للبحر</h2>
+  <div class="grid" id="elevStats"></div>
+  <div class="mapwrap" id="elevWrap"><img id="elevImg" alt="خريطة الارتفاع"></div>
+  <div class="legend">
+    <span><i class="sw" style="background:#d73027"></i>0–2 م</span>
+    <span><i class="sw" style="background:#fc8d59"></i>2–5 م</span>
+    <span><i class="sw" style="background:#fee08b"></i>5–10 م</span>
+    <span><i class="sw" style="background:#d9ef8b"></i>10–20 م</span>
+    <span><i class="sw" style="background:#91cf60"></i>20–40 م</span>
+    <span><i class="sw" style="background:#1a9850"></i>أكثر من 40 م</span>
+    <span><i class="sw" style="background:#28468c"></i>بحر</span>
+  </div>
+  <p>الأجزاء الحمراء والبرتقالية، الشريط الساحلي ومحيط مصب نهر الكبير الشمالي، هي الأكثر تعرّضاً للعواصف البحرية وارتفاع منسوب البحر وتجمّع مياه الأمطار.</p>
+  <div class="basis">يبني على: نموذج الارتفاع Copernicus DEM GLO-30، من قياسات رادار TanDEM-X بين 2011 و2015، بدقة نحو 30 م. ما بُني بعد ذلك لا يظهر فيه. هذا نموذج «سطح»: في المناطق المبنية يقيس ارتفاع الأسطح لا الأرض، فالأحياء الكثيفة تبدو أعلى مما هي، والخطأ الرأسي قد يصل إلى بضعة أمتار. لا يكفي لرسم خريطة فيضان دقيقة.<span class="conf mid">ثقة متوسطة</span></div>
+</section>
+
+</div>
+
+<div class="tabpanel" id="g-climate" role="tabpanel"><div class="group"><i>3</i>المناخ</div>
+
+<section class="card" id="rain">
+  <h2>الأمطار: ما سُجّل فعلاً منذ 1940</h2>
+  <div class="grid" id="rainStats"></div>
+  <h3>احتمال أن يمطر (1 ملم أو أكثر) في يوم ما، متوسط 1991–2020</h3>
+  <svg id="rainChart" viewBox="0 0 640 240" width="100%" role="img" aria-label="احتمال المطر لكل شهر"></svg>
+  <h3>مجموع المطر في كل سنة مطرية (أيلول–آب)</h3>
+  <svg id="rainYears" viewBox="0 0 640 230" width="100%" role="img" aria-label="مجموع المطر السنوي"></svg>
+  <p class="sub">الخط المتقطع: متوسط 1991–2020. السنة المطرية تُسمّى بالسنة التي تنتهي فيها، فـ«2026» هي أيلول 2025 – آب 2026.</p>
+  <p>آخر سنتين متطرفتان: 2025 أجفّ سنة في السلسلة، وفي 2026 تضاعف المطر تقريباً، وأغزره في شباط (342 ملم) ونيسان (255 ملم). هذا يتّسق مع ما نُشر عن جفاف 2025 وعن فيضانات ريف اللاذقية في 7–9 شباط 2026، لكننا لم نقارنه بقياسات محطة أرصاد.</p>
+  <div class="basis">يبني على: إعادة التحليل المناخي ERA5 من المركز الأوروبي ECMWF (Copernicus)، قيم يومية عبر خدمة Open-Meteo. خلية ERA5 حجمها نحو 25 × 25 كم ومركزها <span id="rainCell"></span>، أي داخل اليابسة شرق المدينة حيث المطر عادة أكثر من الساحل، وERA5 يقلل من شدة العواصف القصيرة. الأرقام مناسبة لمقارنة السنوات والفصول، لا لقياس دقيق للمطر فوق الحي.<span class="conf high">ثقة عالية في المقارنة بين السنوات</span><span class="conf mid">متوسطة في الكمية فوق الحي</span></div>
+</section>
+
+<section class="card" id="lst">
+  <h2>حرارة سطح الأرض في الصيف</h2>
+  <div class="grid" id="lstStats"></div>
+  <h3>متوسط حرارة السطح: المناطق المبنية والنباتية والبحر</h3>
+  <svg id="lstChart" viewBox="0 0 640 240" width="100%" role="img" aria-label="حرارة السطح لكل سنة"></svg>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--warn)"></i>مبانٍ وأرض جرداء</span>
+    <span><i class="sw" style="background:var(--good)"></i>نبات كثيف</span>
+    <span><i class="sw" style="background:var(--bar)"></i>البحر</span>
+  </div>
+  <h3>الخريطة</h3>
+  <div class="controls"><input type="range" id="lstYr" min="0" step="1" aria-label="السنة"><b id="lstLabel"></b></div>
+  <div class="mapwrap" id="lstWrap"><img id="lstImg" alt="خريطة حرارة السطح"></div>
+  <div class="legend" style="margin-top:6px">
+    <span style="display:inline-block;width:160px;height:12px;border-radius:3px;background:linear-gradient(to left,#313695,#74add1,#ffffbf,#f46d43,#a50026)"></span>
+    <span>25 ← 55 °م</span><span><i class="sw" style="background:#c8c8c8"></i>غيوم أو بلا بيانات</span>
+  </div>
+  <div class="basis">يبني على: Landsat 8 و9، المجموعة 2 المستوى 2 (حرارة السطح من الحزمة الحرارية)، مشهد صافٍ واحد في الصيف (حزيران–آب) لكل سنة، نحو الساعة 11 صباحاً بالتوقيت المحلي. هذه حرارة <b>السطح</b> (الأسطح والإسفلت والتربة)، وهي أعلى بكثير من حرارة الهواء. الدقة الأصلية للحزمة الحرارية 100 م. الفرق بين السنوات يتأثر بيوم الالتقاط والطقس في ذلك اليوم، فلا يُقرأ كاتجاه مناخي.<span class="conf high">ثقة عالية في القياس</span><span class="conf mid">متوسطة في المقارنة بين السنوات</span></div>
+</section>
+
+</div>
+
+<div class="tabpanel" id="g-env" role="tabpanel"><div class="group"><i>4</i>الهواء والنشاط</div>
+
+<section class="card" id="air">
+  <h2>تلوث الهواء: ثاني أكسيد النيتروجين NO₂ من القمر Sentinel-5P</h2>
+  <p>NO₂ غاز ينتج من الاحتراق: السيارات والمولدات ومحطات الكهرباء والسفن والمصانع. يهيّج الرئتين ويساعد على تكوّن الأوزون والجسيمات الدقيقة. القيمة الأقل تعني عادة هواءً أنظف.</p>
+  <div class="grid" id="no2Stats"></div>
+  <h3>المتوسط السنوي: الرمل الجنوبي والبحر المفتوح ودمشق</h3>
+  <svg id="no2Chart" viewBox="0 0 640 250" width="100%" role="img" aria-label="NO2 السنوي للرمل الجنوبي والبحر ودمشق"></svg>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--warn)"></i>الرمل الجنوبي</span>
+    <span><i class="sw" style="background:var(--bar)"></i>البحر المفتوح غرب اللاذقية</span>
+    <span><i class="sw" style="background:var(--muted)"></i>دمشق (للمقارنة)</span>
+  </div>
+  <h3>الخريطة حول اللاذقية</h3>
+  <div class="controls">
+    <input type="range" id="no2yr" min="0" step="1" aria-label="السنة">
+    <b id="no2yrLabel"></b>
+  </div>
+  <div class="mapwrap" id="no2wrap" style="aspect-ratio:1/1;max-width:520px">
+    <img id="no2img" alt="خريطة NO2 حول اللاذقية">
+    <span id="no2ban" style="position:absolute;transform:translate(-50%,-140%);font-size:12px;font-weight:600;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000">بانياس ▾</span>
+    <span id="no2mark" style="position:absolute;width:14px;height:14px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #000;transform:translate(-50%,-50%)" title="الرمل الجنوبي"></span>
+  </div>
+  <div class="legend" style="margin-top:6px">
+    <span style="display:inline-block;width:160px;height:12px;border-radius:3px;background:linear-gradient(to left,#fff7d6,#fdc470,#ec7034,#b42828,#640a28)"></span>
+    <span id="no2scale"></span>
+    <span><i class="sw" style="border:2px solid #fff;box-shadow:0 0 0 2px #000;border-radius:50%"></i>الرمل الجنوبي</span>
+  </div>
+  <p>على الخريطة تظهر بقعتان: فوق مدينة اللاذقية حيث الرمل الجنوبي، وأخرى أشد جنوباً قرب بانياس حيث المصفاة ومحطة الكهرباء. الألوان مقياس واحد لكل السنوات، فيمكن مقارنتها. بقعة بانياس كانت الأشد بين 2018 و2021 وصارت أضعف بكثير منذ 2022؛ لم نتحقق من السبب (تشغيل أقل للمصفاة أو المحطة، أو غير ذلك). بقعة اللاذقية بقيت في مكانها كل السنوات.</p>
+  <h3>كيف تُقرأ الأرقام</h3>
+  <ul>
+    <li><b>الفرق عن البحر هو المهم:</b> لا تنزل القيمة إلى الصفر؛ فوق البحر تبقى خلفية طبيعية. ما يزيد عليها هو ما تضيفه المدينة.</li>
+    <li><b>الانخفاض ليس دائماً تحسناً:</b> قد يعني هواءً أنظف، أو نقص وقود وكهرباء وتراجعاً في النشاط الاقتصادي.</li>
+    <li><b>هذا قياس للعمود الجوي كله</b> فوق المنطقة، لا تركيز الغاز عند مستوى التنفس، فلا يُقارن مباشرة بحدود منظمة الصحة العالمية.</li>
+    <li><b>NO₂ ملوِّث واحد فقط:</b> القمر لا يقيس هنا الغبار ولا الجسيمات الدقيقة PM2.5.</li>
+  </ul>
+  <div class="basis">يبني على: منتجات Sentinel-5P/TROPOMI من المستوى 3 (عمود NO₂ في طبقة التروبوسفير، متوسطات سنوية) من بوابة S5P-PAL التابعة لوكالة الفضاء الأوروبية، الإصدار 001، بدقة نحو 2.4 كم. قيمة كل مكان هي متوسط 3×3 خلايا (نحو 7 × 7 كم) حوله، فهي تمثل الرمل الجنوبي وما حوله من المدينة، لا الحي وحده. سنة 2018 تبدأ في أيار. الوحدة: ميكرومول لكل متر مربع (µmol/m²).<span class="conf high">ثقة عالية في القياس</span><span class="conf mid">متوسطة في نسبته للحي وحده</span></div>
+</section>
+
+<section class="card" id="night">
+  <h2>الإضاءة الليلية: النشاط والكهرباء عبر السنين</h2>
+  <div class="grid" id="nightStats"></div>
+  <h3>متوسط شدة الضوء ليلاً</h3>
+  <svg id="nightChart" viewBox="0 0 640 230" width="100%" role="img" aria-label="شدة الإضاءة الليلية لكل سنة"></svg>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--warn)"></i>منطقة الحي (منطقة صورة القمر الصناعي)</span>
+    <span><i class="sw" style="background:var(--bar)"></i>اللاذقية وما حولها (منطقة الخريطة)</span>
+  </div>
+  <h3>الخريطة</h3>
+  <div class="controls"><input type="range" id="nightYr" min="0" step="1" aria-label="السنة"><b id="nightLabel"></b></div>
+  <div class="mapwrap" id="nightWrap" style="max-width:520px">
+    <img id="nightImg" alt="خريطة الإضاءة الليلية">
+    <span id="nightMark" style="position:absolute;width:14px;height:14px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #000;transform:translate(-50%,-50%)" title="الرمل الجنوبي"></span>
+  </div>
+  <div class="legend" style="margin-top:6px">
+    <span style="display:inline-block;width:160px;height:12px;border-radius:3px;background:linear-gradient(to left,#050514,#281e5a,#b4503c,#fac850,#ffffdc)"></span>
+    <span id="nightScale"></span>
+    <span><i class="sw" style="border:2px solid #fff;box-shadow:0 0 0 2px #000;border-radius:50%"></i>الرمل الجنوبي</span>
+  </div>
+  <p>الضوء ليلاً يعكس الكهرباء والنشاط: الشوارع والبيوت والمحلات والميناء. انخفاضه في سوريا يرتبط عادة بانقطاع الكهرباء ونقص الوقود، لا بقلة السكان وحدها.</p>
+  <div class="basis">يبني على: منتج Black Marble السنوي من ناسا (VNP46A4، الإصدار 2، المجموعة 5200)، من القمر Suomi-NPP/VIIRS، بدقة نحو 500 م، مركّب «كل الزوايا، بلا ثلج» بعد إزالة الغيوم وضوء القمر. الوحدة نانوواط/سم²/ستيراديان. منطقة الحي صغيرة (نحو 8 × 6 خلايا)، فالقيمة تشمل الأحياء المجاورة.<span class="conf high">ثقة عالية</span></div>
+</section>
+
+</div>
+
+<div class="tabpanel" id="g-risk" role="tabpanel"><div class="group"><i>5</i>المخاطر</div>
+
+<section class="card" id="risk">
+  <h2>مخاطر يمكن أن تؤثر على الحي</h2>
+  <table>
+    <thead><tr><th>الخطر</th><th>ما نعرفه</th><th>الثقة</th></tr></thead>
+    <tbody>
+      <tr><td>الزلازل</td><td>زلزال 6 شباط 2023: تقييم أولي بصور الأقمار الصناعية (Pléiades، 7 شباط) رصد مباني مدمّرة أو متضررة بشدة شرق الرمل الجنوبي، ومباني يُحتمل تضررها غربه. في المحافظة كلها: 805 وفيات ونحو 100 مبنى منهار (المحافظ، 28 شباط 2023).</td><td><span class="conf high">عالية</span></td></tr>
+      <tr><td>كثافة البناء</td><td>الصور تُظهر مبانٍ متلاصقة بلا فراغات خضراء تقريباً. هذا يزيد خطر الحرائق وصعوبة الإخلاء والإنقاذ وقت الكوارث، ويرفع حرارة الحي صيفاً.</td><td><span class="conf mid">متوسطة – استنتاج من الصورة</span></td></tr>
+      <tr><td>تلوث البحر</td><td>دراسة من جامعة تشرين (عيّنات حزيران 2022) في منطقة الكورنيش الجنوبي، أي ساحل الحي، وجدت أعلى تراكيز النترات والأمونيوم عند أكبر مصبّين للصرف الصحي، وتقلّ كلما ابتعدنا عنهما. تقرير PAX (تشرين الأول 2021) وثّق تسرب أكثر من 10,000 طن من الفيول من محطة كهرباء بانياس، جنوب اللاذقية، في آب 2021، ووصل إلى تركيا وقبرص، ووصف الساحل السوري بأنه بؤرة تلوث مرتبطة بالنزاع.</td><td><span class="conf mid">متوسطة</span></td></tr>
+    </tbody>
+  </table>
+  <div class="basis">يبني على: تقييم الأضرار بالأقمار الصناعية (International Charter، 7 شباط 2023)، Syriac Press، دراسة جامعة تشرين، تقرير PAX. تحققنا من كل رقم هنا في مصدره. القائمة ليست شاملة.</div>
+</section>
+
+</div>
+
+<div class="tabpanel" id="g-src" role="tabpanel"><div class="group"><i>6</i>المصادر</div>
+
+<section class="card" id="sources">
+  <h2>المصادر</h2>
+  <ul class="src">
+    <li>صور Sentinel-2 L2A، Copernicus/ESA – فهرس Element 84 Earth Search: https://earth-search.aws.element84.com/v1</li>
+    <li>ERA5، المركز الأوروبي ECMWF / Copernicus، عبر Open-Meteo: https://open-meteo.com/en/docs/historical-weather-api</li>
+    <li>Copernicus DEM GLO-30 (AWS Open Data): https://registry.opendata.aws/copernicus-dem/</li>
+    <li>Landsat 8/9 Collection 2 Level-2، USGS، عبر Microsoft Planetary Computer: https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2</li>
+    <li>GHSL GHS-BUILT-S R2023A، JRC: https://ghsl.jrc.ec.europa.eu/</li>
+    <li>WorldPop R2025A، جامعة ساوثهامبتون: https://www.worldpop.org/</li>
+    <li>NASA Black Marble VNP46A4، LAADS DAAC: https://ladsweb.modaps.eosdis.nasa.gov/</li>
+    <li>OpenStreetMap © مساهمو OpenStreetMap، ODbL: https://www.openstreetmap.org/copyright</li>
+    <li>Sentinel-5P NO₂، منتجات المستوى 3 – بوابة S5P-PAL (ESA): https://data-portal.s5p-pal.com/</li>
+    <li>تقييم أضرار الزلزال، International Charter: https://data.inpe.br/charter/data/Call_0920_Syria/Izaz_vap-920-2-product.pdf</li>
+    <li>Syriac Press، 28 شباط 2023: https://syriacpress.com/blog/2023/02/28/governor-of-lattakia-syria-805-people-died-100-building-collapsed-in-6-february-earthquake/</li>
+    <li>درويش ولايقة، «تراكيز المغذيات والكلوروفيل في مصبات الصرف الصحي في المياه الساحلية لمدينة اللاذقية»، مجلة جامعة تشرين، سلسلة العلوم البيولوجية، المجلد 54 العدد 6: https://journal.latakia-univ.edu.sy/index.php/bioscnc/article/download/15984/13269/68208</li>
+    <li>PAX، Environment and Conflict Alert 4: Baniyas، تشرين الأول 2021: https://paxforpeace.nl/publications/environment-and-conflict-alert-4-baniyas/</li>
+    <li>فيضانات شباط 2026 في اللاذقية – عنب بلدي: https://english.enabbaladi.net/archives/2026/02/casualties-and-damage-as-rainstorm-floods-northern-syria-camps/</li>
+  </ul>
+  <p class="sub">جُمعت المعلومات في تشرين الثاني 2026. الصفحة تعمل بلا إنترنت؛ الروابط للرجوع إلى المصادر فقط.</p>
+</section>
+</div>
+</main>
+<footer>إعداد وتصميم: <b>عمر حمامة</b> · تشرين الثاني 2026 · صفحة تعمل بلا إنترنت، مبنية من بيانات مفتوحة؛ التفاصيل والروابط في قسم المصادر.</footer>
+<button class="iconbtn totop" id="totop" aria-label="إلى أعلى الصفحة" title="إلى أعلى">↑</button>
+
+<script>
+const YEARS = __YEARS__;
+const EXTRA = __EXTRA__;
+const MONTHS = ["كانون2","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين1","تشرين2","كانون1"];
+const fmt = n => n.toLocaleString("ar-SY");
+
+let mode = "rgb", idx = YEARS.length - 1;
+const img = document.getElementById("img"), yr = document.getElementById("yr");
+yr.max = YEARS.length - 1; yr.value = idx;
+function show(){
+  const y = YEARS[idx];
+  img.src = y[mode];
+  document.getElementById("yrLabel").textContent = y.year;
+  document.getElementById("sceneInfo").textContent = `تاريخ الالتقاط: ${y.date} — المشهد: ${y.scene}`;
+  document.getElementById("legNdvi").hidden = mode !== "ndvi";
+  document.getElementById("legTurb").hidden = mode !== "turb";
+  document.getElementById("turbNote").hidden = mode !== "turb";
+  document.getElementById("bRgb").setAttribute("aria-pressed", mode === "rgb");
+  document.getElementById("bNdvi").setAttribute("aria-pressed", mode === "ndvi");
+  document.getElementById("bTurb").setAttribute("aria-pressed", mode === "turb");
+}
+yr.oninput = () => { idx = +yr.value; show(); };
+document.getElementById("bRgb").onclick = () => { mode = "rgb"; show(); };
+document.getElementById("bNdvi").onclick = () => { mode = "ndvi"; show(); };
+document.getElementById("bTurb").onclick = () => { mode = "turb"; show(); };
+show();
+
+// land stats
+const first = YEARS[0], last = YEARS[YEARS.length - 1];
+document.getElementById("landStats").innerHTML = `
+  <div class="stat"><b>${fmt(last.built_pct)}٪</b><span>مبانٍ وأرض جرداء من اليابسة، ${last.year}</span></div>
+  <div class="stat"><b>${fmt(last.veg_pct)}٪</b><span>أرض خضراء من اليابسة، ${last.year}</span></div>
+  <div class="stat"><b>${fmt(first.veg_pct)}٪ ← ${fmt(last.veg_pct)}٪</b><span>الأخضر من ${first.year} إلى ${last.year}</span></div>
+  <div class="stat"><b>${fmt(last.land_km2)} كم²</b><span>مساحة اليابسة في الصورة</span></div>`;
+
+function bars(svg, labels, values, maxV, unit, highlight){
+  const W = 640, H = +svg.getAttribute("viewBox").split(" ")[3], pad = 30, bot = 34;
+  const n = values.length, bw = (W - pad * 2) / n;
+  let s = "";
+  for (let g = 0; g <= 4; g++){
+    const v = maxV * g / 4, y = H - bot - (H - bot - 14) * g / 4;
+    s += `<line x1="${pad}" x2="${W - pad}" y1="${y}" y2="${y}" stroke="var(--line)"/>`;
+    s += `<text x="${W - pad + 4}" y="${y + 4}" text-anchor="start">${fmt(Math.round(v))}${unit}</text>`;
+  }
+  values.forEach((v, i) => {
+    // RTL: first item on the right
+    const x = W - pad - (i + 1) * bw + bw * 0.15, h = (H - bot - 14) * v / maxV, y = H - bot - h;
+    s += `<rect x="${x}" y="${y}" width="${bw * 0.7}" height="${h}" rx="3" fill="${highlight && highlight(i) ? "var(--bar)" : "var(--bar2)"}"><title>${labels[i]}: ${fmt(v)}${unit}</title></rect>`;
+    s += `<text x="${x + bw * 0.35}" y="${y - 4}" text-anchor="middle">${fmt(v)}</text>`;
+    s += `<text x="${x + bw * 0.35}" y="${H - bot + 16}" text-anchor="middle">${labels[i]}</text>`;
+  });
+  svg.innerHTML = s;
+}
+bars(document.getElementById("vegChart"), YEARS.map(y => y.year), YEARS.map(y => y.veg_pct),
+     Math.max(10, Math.ceil(Math.max(...YEARS.map(y => y.veg_pct)) / 10) * 10), "٪", () => true);
+const stats = (id, items) => document.getElementById(id).innerHTML =
+  items.map(([v, t]) => `<div class="stat"><b>${v}</b><span>${t}</span></div>`).join("");
+const sizeMap = (wrapId, w, h) => document.getElementById(wrapId).style.aspectRatio = `${w}/${h}`;
+const hideIf = (id, cond) => { if (cond) document.getElementById(id).hidden = true; return cond; };
+
+// multi-series bar chart (RTL: first label on the right)
+function groups(svg, labels, series, maxV, unit, minV = 0){
+  const W = 640, H = +svg.getAttribute("viewBox").split(" ")[3], pad = 34, bot = 30;
+  const gw = (W - 2 * pad) / labels.length, bw = gw * 0.78 / series.length;
+  const Y = v => H - bot - (H - bot - 12) * (v - minV) / (maxV - minV);
+  let s = "";
+  for (let g = 0; g <= 4; g++){
+    const v = minV + (maxV - minV) * g / 4;
+    const lab = maxV - minV < 10 ? Math.round(v * 10) / 10 : Math.round(v);
+    s += `<line x1="${pad}" x2="${W - pad}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${W - pad + 4}" y="${Y(v) + 4}">${fmt(lab)}${unit}</text>`;
+  }
+  const every = Math.ceil(labels.length / 14);
+  labels.forEach((l, i) => {
+    const x0 = W - pad - (i + 1) * gw + gw * 0.11;
+    series.forEach(([vals, c], j) => {
+      const v = vals[i]; if (v == null) return;
+      s += `<rect x="${x0 + j * bw}" y="${Y(v)}" width="${Math.max(bw - 1, 1)}" height="${Y(minV) - Y(v)}" rx="1.5" fill="${typeof c === "function" ? c(i) : c}"><title>${l}: ${fmt(v)}${unit}</title></rect>`;
+    });
+    if (i % every === 0) s += `<text x="${x0 + gw * 0.39}" y="${H - bot + 16}" text-anchor="middle">${l}</text>`;
+  });
+  svg.innerHTML = s;
+  return Y;
+}
+
+// rain (ERA5)
+if (!hideIf("rain", !EXTRA.rain)) {
+  const R = EXTRA.rain, full = R.years.filter(y => y.complete), lastY = full[full.length - 1];
+  stats("rainStats", [
+    [`${fmt(R.normal)} ملم`, "متوسط المطر السنوي 1991–2020"],
+    [`${fmt(lastY.mm)} ملم`, `السنة المطرية ${lastY.y} (أيلول ${lastY.y - 1} – آب ${lastY.y})`],
+    [`${fmt(R.last10)} ملم`, "متوسط آخر 10 سنوات مطرية"],
+    [R.driest.map(d => d.y).join("، "), "أجفّ ثلاث سنوات منذ 1941"]]);
+  bars(document.getElementById("rainChart"), MONTHS, R.prob.map(Math.round), 50, "٪", i => R.prob[i] >= 30);
+  const ys = full.filter(y => y.y >= 1981);
+  const maxV = Math.ceil(Math.max(...ys.map(y => y.mm)) / 200) * 200;
+  const svg = document.getElementById("rainYears");
+  const Y = groups(svg, ys.map(y => y.y), [[ys.map(y => y.mm), i => ys[i].mm < 0.75 * R.normal ? "var(--warn)" : "var(--bar)"]], maxV, "");
+  svg.innerHTML += `<line x1="34" x2="606" y1="${Y(R.normal)}" y2="${Y(R.normal)}" stroke="var(--ink)" stroke-dasharray="5 4"/>`;
+  document.getElementById("rainCell").textContent = `${R.cell[0]}° شمالاً، ${R.cell[1]}° شرقاً (${R.first} حتى ${R.last})`;
+}
+
+// elevation
+if (!hideIf("elev", !EXTRA.elev)) {
+  const E = EXTRA.elev;
+  stats("elevStats", [
+    [`${fmt(E.below2)}٪`, "من اليابسة في الصورة أقل من 2 م فوق البحر"],
+    [`${fmt(E.below5)}٪`, "أقل من 5 م"],
+    [`${fmt(E.below10)}٪`, "أقل من 10 م"],
+    [`${fmt(E.median)} م`, "الارتفاع الوسيط لليابسة"]]);
+  sizeMap("elevWrap", E.w, E.h); document.getElementById("elevImg").src = E.img;
+}
+
+// land surface temperature
+if (!hideIf("lst", !EXTRA.lst)) {
+  const L = EXTRA.lst, Ys = L.years, last = Ys[Ys.length - 1];
+  const avg = k => Ys.reduce((s, y) => s + y[k], 0) / Ys.length;
+  stats("lstStats", [
+    [`${fmt(last.built)} °م`, `المناطق المبنية، ${last.date}`],
+    [`${fmt(last.veg)} °م`, `المناطق النباتية، ${last.date}`],
+    [`${fmt(last.sea)} °م`, `سطح البحر، ${last.date}`],
+    [`+${fmt(Math.round((avg("built") - avg("sea")) * 10) / 10)} °م`, `المبني أسخن من البحر، متوسط ${Ys[0].year}–${last.year}`]]);
+  groups(document.getElementById("lstChart"), Ys.map(y => y.year),
+         [[Ys.map(y => y.built), "var(--warn)"], [Ys.map(y => y.veg), "var(--good)"], [Ys.map(y => y.sea), "var(--bar)"]], 50, "°", 20);
+  sizeMap("lstWrap", L.w, L.h);
+  const r = document.getElementById("lstYr"); r.max = Ys.length - 1; r.value = Ys.length - 1;
+  const showL = () => { const y = Ys[+r.value]; document.getElementById("lstImg").src = y.img;
+    document.getElementById("lstLabel").textContent = `${y.year} — ${y.date}، ${y.id}`; };
+  r.oninput = showL; showL();
+}
+
+// built-up and population
+if (!hideIf("growth", !EXTRA.bp)) {
+  const B = EXTRA.bp, b0 = B.built[0], bObs = B.built.find(b => b.year === 2020) || B.built[B.built.length - 1];
+  const p0 = B.pop[0], p1 = B.pop[B.pop.length - 1];
+  const land = (YEARS[YEARS.length - 1] || {}).land_km2;
+  stats("growthStats", [
+    [`${fmt(b0.built_km2)} ← ${fmt(bObs.built_km2)} كم²`, `أسطح مبنية ${b0.year} ← ${bObs.year} (+${fmt(Math.round(100 * (bObs.built_km2 / b0.built_km2 - 1)))}٪)`],
+    [`≈ ${fmt(Math.round(p1.people / 1000) * 1000)}`, `سكان منطقة الصورة، تقدير ${p1.year}`],
+    [`≈ ${fmt(Math.round(p1.people / land / 100) * 100)}`, `نسمة لكل كم² من اليابسة، ${p1.year}`],
+    [`حتى ${fmt(Math.round(p1.max_density / 1000) * 1000)}`, "نسمة لكل كم² في أكثف خلية (100 م)"]]);
+  groups(document.getElementById("builtChart"), B.built.map(b => b.year),
+         [[B.built.map(b => b.built_km2), i => B.built[i].year > 2020 ? "var(--bar2)" : "var(--bar)"]],
+         Math.ceil(Math.max(...B.built.map(b => b.built_km2)) * 5) / 5, "");
+  sizeMap("builtWrap", B.w, B.h); document.getElementById("builtImg").src = B.built_img;
+  document.getElementById("builtLegend").innerHTML = Object.entries(B.first_colors).map(([y, c]) =>
+    `<span><i class="sw" style="background:rgb(${c})"></i>${y === "1975" ? "1975 أو قبل" : y}${y === "2025" ? " (إسقاط)" : ""}</span>`).join("");
+  sizeMap("popWrap", B.w, B.h); document.getElementById("popImg").src = B.pop_img;
+  document.getElementById("popYear").textContent = p1.year;
+  document.getElementById("popScale").textContent = `0 ← ${fmt(B.pop_vmax)} نسمة/كم²`;
+}
+
+// night lights
+if (!hideIf("night", !EXTRA.night)) {
+  const N = EXTRA.night, Ys = N.years, f = Ys[0], l = Ys[Ys.length - 1];
+  const peak = Ys.reduce((a, b) => b.mean_area > a.mean_area ? b : a), low = Ys.reduce((a, b) => b.mean_area < a.mean_area ? b : a);
+  stats("nightStats", [
+    [fmt(l.mean_area), `منطقة الحي، ${l.year} (نانوواط/سم²/ستيراديان)`],
+    [`${fmt(Math.round(100 * (l.mean_area / f.mean_area - 1)))}٪`, `التغيّر من ${f.year} إلى ${l.year}`],
+    [`${low.year}`, `أخفت سنة (${fmt(low.mean_area)})`],
+    [`${peak.year}`, `أسطع سنة (${fmt(peak.mean_area)})`]]);
+  groups(document.getElementById("nightChart"), Ys.map(y => y.year),
+         [[Ys.map(y => y.mean_area), "var(--warn)"], [Ys.map(y => y.mean_map), "var(--bar)"]],
+         Math.ceil(Math.max(...Ys.map(y => y.mean_area)) / 10) * 10, "");
+  sizeMap("nightWrap", N.w, N.h);
+  const mk = document.getElementById("nightMark"); mk.style.left = 100 * N.mark.x + "%"; mk.style.top = 100 * N.mark.y + "%";
+  document.getElementById("nightScale").textContent = `0 ← ${fmt(N.vmax)} (مقياس لوغاريتمي) — ${N.bbox[0]}–${N.bbox[2]}° شرقاً، ${N.bbox[1]}–${N.bbox[3]}° شمالاً`;
+  const r = document.getElementById("nightYr"); r.max = Ys.length - 1; r.value = Ys.length - 1;
+  const showN = () => { const y = Ys[+r.value]; document.getElementById("nightImg").src = y.img; document.getElementById("nightLabel").textContent = y.year; };
+  r.oninput = showN; showN();
+}
+
+// ---- the neighbourhood: numbers inside the boundary + outlines on every map ----
+const HOOD = EXTRA.hood || {};
+const OUTLINE_WRAPS = {s2: "img", elev: "elevImg", lst: "lstImg", bp: ["builtImg", "popImg"], no2: "no2img", night: "nightImg"};
+function drawOutlines(v){
+  const H = HOOD[v]; if (!H) return;
+  document.querySelectorAll(".hood-ol").forEach(e => e.remove());
+  for (const [k, ids] of Object.entries(OUTLINE_WRAPS)) {
+    if (!H.outline[k]) continue;
+    [].concat(ids).forEach(id => { const img = document.getElementById(id); if (!img) return;
+      img.parentElement.insertAdjacentHTML("beforeend",
+        `<svg class="hood-ol" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path d="${H.outline[k]}"/></svg>`); });
+  }
+  const osvg = document.querySelector("#osmWrap svg");
+  if (osvg && H.outline.osm) { const O = EXTRA.osm;
+    osvg.insertAdjacentHTML("afterbegin", "");
+    const g = `<path class="hood-ol-osm" transform="scale(${O.w},${O.h})" d="${H.outline.osm}"/>`;
+    const firstDot = osvg.querySelector(".poi"); firstDot ? firstDot.insertAdjacentHTML("beforebegin", g) : osvg.insertAdjacentHTML("beforeend", g); }
+}
+function showHood(v){
+  const H = HOOD[v]; if (!H) { document.getElementById("hood").hidden = true; return; }
+  document.getElementById("hvA").setAttribute("aria-pressed", v === "A");
+  document.getElementById("hvB").setAttribute("aria-pressed", v === "B");
+  const p = H.pop[H.pop.length - 1], p0 = H.pop[0];
+  const b0 = H.built[0], b20 = H.built.find(x => x.year === 2020) || H.built[H.built.length - 1];
+  const s2 = H.s2[H.s2.length - 1];
+  const lst = H.lst.filter(x => x.hood != null), lstL = lst[lst.length - 1];
+  const nt = H.night || [], ntF = nt[0], ntL = nt[nt.length - 1];
+  const fac = H.facilities || {};
+  stats("hoodStats", [
+    [`${fmt(H.land_km2)} كم²`, "مساحة اليابسة داخل الحدود"],
+    [`≈ ${fmt(Math.round(p.people / 100) * 100)}`, `سكان مقدّرون ${p.year} (WorldPop)`],
+    [`≈ ${fmt(Math.round(p.density / 100) * 100)}`, `نسمة لكل كم²، ${p.year}`],
+    [`${fmt(s2.green_pct)}٪`, `أرض خضراء، ${s2.year}`]]);
+  const E = EXTRA, landAll = YEARS[YEARS.length - 1].land_km2;
+  const all = {
+    pop: E.bp ? E.bp.pop[E.bp.pop.length - 1].people : null,
+    built0: E.bp ? E.bp.built[0].built_km2 : null, built20: E.bp ? (E.bp.built.find(x => x.year === 2020) || {}).built_km2 : null,
+    green: YEARS[YEARS.length - 1].veg_pct, below5: E.elev ? E.elev.below5 : null,
+    lst: E.lst ? E.lst.years[E.lst.years.length - 1].built : null,
+    night: E.night ? E.night.years[E.night.years.length - 1].mean_area : null,
+    nightF: E.night ? E.night.years[0].mean_area : null};
+  const pct = (a, b) => `${a > b ? "+" : ""}${fmt(Math.round(100 * (a / b - 1)))}٪`;
+  const rows = [
+    ["مساحة اليابسة", `${fmt(H.land_km2)} كم²`, `${fmt(landAll)} كم²`],
+    [`السكان المقدّرون ${p.year}`, `≈ ${fmt(Math.round(p.people / 100) * 100)}`, all.pop ? `≈ ${fmt(Math.round(all.pop / 100) * 100)}` : "—"],
+    [`الكثافة ${p.year} (نسمة/كم² يابسة)`, `≈ ${fmt(Math.round(p.density / 100) * 100)}`, all.pop ? `≈ ${fmt(Math.round(all.pop / landAll / 100) * 100)}` : "—"],
+    [`تغيّر السكان المقدّر ${p0.year}–${p.year}`, pct(p.people, p0.people), E.bp ? pct(all.pop, E.bp.pop[0].people) : "—"],
+    [`أسطح مبنية ${b0.year} ← ${b20.year}`, `${fmt(b0.built_km2)} ← ${fmt(b20.built_km2)} كم² (${pct(b20.built_km2, b0.built_km2)})`, all.built0 ? `${fmt(all.built0)} ← ${fmt(all.built20)} كم²` : "—"],
+    [`أرض خضراء ${s2.year}`, `${fmt(s2.green_pct)}٪`, `${fmt(all.green)}٪`],
+    ["أرض أقل من 5 م فوق البحر", `${fmt(H.elev.below5)}٪`, all.below5 != null ? `${fmt(all.below5)}٪` : "—"],
+    [lstL ? `حرارة سطح اليابسة، ${lstL.date}` : "حرارة السطح", lstL ? `${fmt(lstL.hood)} °م` : "—", all.lst != null ? `${fmt(all.lst)} °م (المبني فقط)` : "—"],
+    ntL ? [`الإضاءة الليلية ${ntL.year} (تغيّر منذ ${ntF.year})`, `${fmt(ntL.hood)} (${pct(ntL.hood, ntF.hood)})`, all.night != null ? `${fmt(all.night)} (${pct(all.night, all.nightF)})` : "—"] : null,
+    ["مرافق في OpenStreetMap", `تعليم ${fmt(fac.edu || 0)}، صحة ${fmt(fac.health || 0)}، عبادة ${fmt(fac.worship || 0)}، حدائق ${fmt(fac.green || 0)}`, "—"],
+  ].filter(Boolean);
+  document.querySelector("#hoodTable tbody").innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td><b>${r[1]}</b></td><td>${r[2]}</td></tr>`).join("");
+  drawOutlines(v);
+}
+document.getElementById("hvA").onclick = () => showHood("A");
+document.getElementById("hvB").onclick = () => showHood("B");
+
+// OpenStreetMap
+if (!hideIf("osm", !EXTRA.osm)) {
+  const O = EXTRA.osm, c = O.counts, n = k => c[k] || 0;
+  stats("osmStats", [
+    [fmt(n("building")), "مبنى مرسوم"],
+    [fmt(n("school") + n("kindergarten") + n("university") + n("college")), "مدارس وروضات وجامعات"],
+    [fmt(n("hospital") + n("clinic") + n("doctors") + n("pharmacy")), "مستشفيات وعيادات وصيدليات"],
+    [fmt(n("park") + n("playground") + n("pitch")), "حدائق وملاعب"]]);
+  const col = {edu: "#2b6cb0", health: "#c53030", worship: "#805ad5", green: "#2f855a", safety: "#111"};
+  const KIND = {school: "مدرسة", kindergarten: "روضة", university: "جامعة أو كلية", college: "كلية", hospital: "مستشفى",
+    clinic: "مستوصف", doctors: "مركز طبي", pharmacy: "صيدلية", place_of_worship: "دار عبادة", fire_station: "مركز إطفاء",
+    police: "مخفر شرطة", park: "حديقة أو ساحة", playground: "ملعب أطفال", pitch: "ملعب"};
+  const GROUPS = [["edu", "التعليم"], ["health", "الصحة"], ["worship", "دور العبادة"], ["green", "حدائق وملاعب"], ["safety", "الإطفاء والشرطة"]];
+  // number the places group by group, named ones first
+  const pts = [];
+  GROUPS.forEach(([g]) => O.points.filter(p => p.c === g)
+    .sort((a, b) => (!a.n - !b.n) || a.n.localeCompare(b.n, "ar")).forEach(p => pts.push(p)));
+  pts.forEach((p, i) => p.i = i + 1);
+  const label = p => p.n || `${KIND[p.k] || p.k} (بلا اسم في الخريطة)`;
+  // where an unnamed place is: nearest named streets and landmark, plus a link to edit it on OpenStreetMap
+  const where = p => {
+    if (p.n) return "";
+    const bits = (p.near || []).map(s => `${s.street} (${fmt(s.m)} م)`);
+    let t = bits.length ? `قرب ${bits.join(" و")}` : "لا يوجد شارع مسمّى في الخريطة على بعد 400 م";
+    if (p.landmark) t += `؛ أقرب مرفق مسمّى: ${p.landmark.name} (${fmt(p.landmark.m)} م)`;
+    if (p.landmark && p.landmark.same_kind && p.landmark.m <= 30)
+      t += ` — <b>على الأرجح هو نفسه «${p.landmark.name}»</b>، مرسوماً في الخريطة مرتين: مرة باسمه ومرة دون اسم`;
+    return `<span class="where">${t}. <a href="https://www.openstreetmap.org/${p.osm}" target="_blank" rel="noopener">افتحه في OpenStreetMap</a> · ${p.lat.toFixed(5)}، ${p.lon.toFixed(5)}</span>`;
+  };
+  const dots = pts.map(p => `<g class="poi" data-i="${p.i}" tabindex="0"><circle cx="${p.x}" cy="${p.y}" r="8.5" fill="${col[p.c]}" stroke="#fff" stroke-width="1.5"/>` +
+    `<text x="${p.x}" y="${p.y + 3.2}" text-anchor="middle" style="fill:#fff;font-size:8.5px;font-weight:700;pointer-events:none">${p.i}</text><title>${p.i}. ${label(p)} — ${KIND[p.k]}</title></g>`).join("");
+  document.getElementById("osmWrap").innerHTML = O.svg.replace("</svg>", dots + "</svg>") +
+    `<div id="osmTip" class="osm-tip" hidden></div>`;
+  document.getElementById("osmList").innerHTML = GROUPS.map(([g, t]) => {
+    const items = pts.filter(p => p.c === g); if (!items.length) return "";
+    return `<div class="osm-group"><h4><i class="sw" style="background:${col[g]};border-radius:50%"></i>${t} <span>(${fmt(items.length)})</span></h4><ol>` +
+      items.map(p => `<li data-i="${p.i}" tabindex="0" value="${p.i}"${p.n ? "" : ' class="unnamed"'}>${label(p)}<small> — ${KIND[p.k]}</small>${where(p)}</li>`).join("") + "</ol></div>";
+  }).join("");
+  const tip = document.getElementById("osmTip"), svgEl = document.querySelector("#osmWrap svg");
+  function mark(i, on){
+    document.querySelectorAll(`#osmWrap .poi[data-i="${i}"], #osmList li[data-i="${i}"]`).forEach(el => el.classList.toggle("hl", on));
+    const p = pts[i - 1];
+    if (on && p) {
+      const r = svgEl.getBoundingClientRect(), k = r.width / O.w;
+      tip.textContent = `${p.i}. ${label(p)}`; tip.hidden = false;
+      tip.style.left = (p.x * k) + "px"; tip.style.top = (p.y * k) + "px";
+    } else tip.hidden = true;
+  }
+  ["mouseover", "focusin"].forEach(ev => document.getElementById("osm").addEventListener(ev, e => {
+    const el = e.target.closest("[data-i]"); if (el) mark(+el.dataset.i, true); }));
+  ["mouseout", "focusout"].forEach(ev => document.getElementById("osm").addEventListener(ev, e => {
+    const el = e.target.closest("[data-i]"); if (el) mark(+el.dataset.i, false); }));
+  document.getElementById("osmList").addEventListener("click", e => {
+    const li = e.target.closest("li[data-i]"); if (!li) return;
+    document.getElementById("osmWrap").scrollIntoView({block: "nearest"}); mark(+li.dataset.i, true); });
+  document.getElementById("osmWrap").addEventListener("click", e => {
+    const g = e.target.closest(".poi"); if (!g) return;
+    const li = document.querySelector(`#osmList li[data-i="${g.dataset.i}"]`);
+    if (li) { li.scrollIntoView({block: "nearest"}); li.classList.add("hl"); setTimeout(() => li.classList.remove("hl"), 1500); } });
+  document.getElementById("osmTime").textContent = (O.timestamp || "").slice(0, 10);
+}
+if (EXTRA.hood && EXTRA.hood.A) { showHood("A"); } else { document.getElementById("hood").hidden = true;
+}
+
+// NO2
+const NO2 = __NO2__;
+if (!NO2.years.length) {
+  document.getElementById("air").hidden = true;
+} else {
+  const Y = NO2.years, L = Y[Y.length - 1];
+  const mean = k => Y.reduce((s, y) => s + y[k], 0) / Y.length;
+  const ex = Math.round(100 * (mean("alraml") - mean("sea")) / mean("sea"));
+  document.getElementById("no2Stats").innerHTML = `
+    <div class="stat"><b>${fmt(L.alraml)}</b><span>الرمل الجنوبي، متوسط ${L.year} (µmol/m²)</span></div>
+    <div class="stat"><b>${fmt(L.sea)}</b><span>البحر المفتوح، ${L.year} – الخلفية</span></div>
+    <div class="stat"><b>${fmt(L.damascus)}</b><span>دمشق، ${L.year} – للمقارنة</span></div>
+    <div class="stat"><b>+${fmt(ex)}٪</b><span>الرمل الجنوبي فوق البحر، متوسط ${Y[0].year}–${L.year}</span></div>`;
+  // grouped bars, RTL (first year on the right)
+  const svg = document.getElementById("no2Chart"), W = 640, H = 250, pad = 34, bot = 30;
+  const maxV = Math.ceil(Math.max(...Y.map(y => y.damascus)) / 20) * 20;
+  const keys = [["alraml", "var(--warn)"], ["sea", "var(--bar)"], ["damascus", "var(--muted)"]];
+  const gw = (W - 2 * pad) / Y.length, bw = gw * 0.26;
+  let s = "";
+  for (let g = 0; g <= 4; g++) {
+    const v = maxV * g / 4, y = H - bot - (H - bot - 12) * g / 4;
+    s += `<line x1="${pad}" x2="${W - pad}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${W - pad + 4}" y="${y + 4}">${fmt(v)}</text>`;
+  }
+  Y.forEach((y, i) => {
+    const x0 = W - pad - (i + 1) * gw + gw * 0.11;
+    keys.forEach(([k, c], j) => {
+      const h = (H - bot - 12) * y[k] / maxV;
+      s += `<rect x="${x0 + j * bw}" y="${H - bot - h}" width="${bw - 1}" height="${h}" rx="2" fill="${c}"><title>${y.year}: ${fmt(y[k])}</title></rect>`;
+    });
+    s += `<text x="${x0 + 1.5 * bw}" y="${H - bot + 16}" text-anchor="middle">${y.year}</text>`;
+  });
+  svg.innerHTML = s;
+  // map
+  const r = document.getElementById("no2yr"), im = document.getElementById("no2img"), mk = document.getElementById("no2mark");
+  document.getElementById("no2wrap").style.aspectRatio = `${NO2.w}/${NO2.h}`;
+  mk.style.left = (100 * NO2.mark.x) + "%"; mk.style.top = (100 * NO2.mark.y) + "%";
+  const bn = document.getElementById("no2ban"); bn.style.left = (100 * NO2.baniyas.x) + "%"; bn.style.top = (100 * NO2.baniyas.y) + "%";
+  document.getElementById("no2scale").textContent = `${fmt(NO2.vmin)} ← ${fmt(NO2.vmax)} µmol/m² — المنطقة ${NO2.bbox[0]}–${NO2.bbox[2]}° شرقاً، ${NO2.bbox[1]}–${NO2.bbox[3]}° شمالاً`;
+  r.max = Y.length - 1; r.value = Y.length - 1;
+  const showNo2 = () => { const y = Y[+r.value]; im.src = y.img; document.getElementById("no2yrLabel").textContent = y.year; };
+  r.oninput = showNo2; showNo2();
+}
+
+// ---- page chrome: summary facts, collapsible basis notes, navigation, theme ----
+(function(){
+  const F = [], add = (v, t, href) => F.push(`<a class="fact" href="#${href}"><b>${v}</b><span>${t}</span></a>`);
+  const E = EXTRA;
+  const HA = E.hood && E.hood.A;
+  if (HA) { const p = HA.pop[HA.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 1000))} ألف`, `سكان الحي، تقدير ${p.year}`, "hood");
+            add(`≈ ${fmt(Math.round(p.density / 1000))} ألف`, "نسمة لكل كم² في الحي", "hood"); }
+  else if (E.bp) { const p = E.bp.pop[E.bp.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 1000))} ألف`, `سكان مقدّرون ${p.year}`, "growth"); }
+  if (HA) { const b = HA.built, a = b[0], c = b.find(x => x.year === 2020) || b[b.length - 1]; add(`+${fmt(Math.round(100 * (c.built_km2 / a.built_km2 - 1)))}٪`, `أسطح مبنية في الحي ${a.year}–${c.year}`, "hood"); }
+  if (HA) add(`${fmt(Math.round(HA.elev.below5))}٪`, "من أرض الحي أقل من 5 م فوق البحر", "hood");
+  else if (E.elev) add(`${fmt(Math.round(E.elev.below5))}٪`, "من اليابسة أقل من 5 م فوق البحر", "elev");
+  if (E.rain) add(`${fmt(E.rain.normal)} ملم`, "مطر سنوي (1991–2020)", "rain");
+  if (E.lst) { const Y = E.lst.years, d = Y.reduce((s, y) => s + y.built - y.sea, 0) / Y.length; add(`+${fmt(Math.round(d))} °م`, "سطح المباني أسخن من البحر صيفاً", "lst"); }
+  if (NO2.years.length) { const Y = NO2.years, m = k => Y.reduce((s, y) => s + y[k], 0) / Y.length; add(`+${fmt(Math.round(100 * (m("alraml") / m("sea") - 1)))}٪`, "NO₂ فوق الحي مقارنة بالبحر", "air"); }
+  if (E.night) { const Y = E.night.years, a = Y[0], b = Y[Y.length - 1]; add(`${fmt(Math.round(100 * (b.mean_area / a.mean_area - 1)))}٪`, `الإضاءة الليلية ${a.year}–${b.year}`, "night"); }
+  document.getElementById("facts").innerHTML = F.join("");
+
+  document.querySelectorAll("div.basis").forEach(div => {
+    const d = document.createElement("details"); d.className = "basis";
+    const confs = [...div.querySelectorAll(".conf")];
+    const sum = document.createElement("summary"); sum.textContent = "على ماذا يبني هذا القسم؟";
+    confs.forEach(c => sum.appendChild(c));
+    const body = document.createElement("div"); body.className = "body"; body.innerHTML = div.innerHTML;
+    d.append(sum, body); div.replaceWith(d);
+    const h2 = d.closest("section")?.querySelector("h2");
+    if (h2 && confs[0]) h2.appendChild(confs[0].cloneNode(true));
+  });
+
+  const links = [...document.querySelectorAll("#nav a")];
+  const panels = [...document.querySelectorAll(".tabpanel")];
+  const main = document.querySelector("main");
+  function activate(id, target, push){
+    const panel = document.getElementById(id) || panels[0];
+    panels.forEach(p => p.hidden = p !== panel);
+    main.classList.toggle("first", panel.id === "g-overview");
+    links.forEach(a => { const on = a.getAttribute("href") === "#" + panel.id;
+      a.classList.toggle("on", on); a.setAttribute("aria-selected", on); a.tabIndex = on ? 0 : -1;
+      if (on) a.scrollIntoView({block: "nearest", inline: "nearest"}); });
+    if (push) history.replaceState(null, "", "#" + (target ? target.id : panel.id));
+    if (target) target.scrollIntoView(); else scrollTo({top: 0});
+  }
+  function go(hash, push){
+    const el = hash && document.getElementById(hash.slice(1));
+    if (!el) return activate(panels[0].id, null, false);
+    if (el.classList.contains("tabpanel")) return activate(el.id, null, push);
+    const p = el.closest(".tabpanel"); if (p) activate(p.id, el, push);
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    const h = a.getAttribute("href"); if (!document.getElementById(h.slice(1))) return;
+    e.preventDefault(); go(h, true);
+  });
+  document.getElementById("nav").addEventListener("keydown", e => {
+    const i = links.indexOf(document.activeElement); if (i < 0) return;
+    const step = {ArrowLeft: 1, ArrowRight: -1, Home: -99, End: 99}[e.key]; if (step == null) return;
+    e.preventDefault();
+    const j = Math.max(0, Math.min(links.length - 1, step === -99 ? 0 : step === 99 ? links.length - 1 : i + step));
+    links[j].focus(); go(links[j].getAttribute("href"), true);
+  });
+  addEventListener("hashchange", () => go(location.hash, false));
+  go(location.hash, false);
+  const onScroll = () => document.getElementById("totop").classList.toggle("show", scrollY > 600);
+  addEventListener("scroll", onScroll, {passive: true}); onScroll();
+  document.getElementById("totop").onclick = () => scrollTo({top: 0});
+
+  const root = document.documentElement, key = "alraml-theme";
+  try { const t = localStorage.getItem(key); if (t) root.dataset.theme = t; } catch (e) {}
+  document.getElementById("theme").onclick = () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem(key, root.dataset.theme); } catch (e) {}
+  };
+})();
+</script>
+</body>
+</html>

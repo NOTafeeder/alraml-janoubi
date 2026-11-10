@@ -1,0 +1,65 @@
+# الرمل الجنوبي – اللاذقية
+
+دراسة لحي الرمل الجنوبي في اللاذقية من صور الأقمار الصناعية والبيانات المفتوحة.
+
+**إعداد وتصميم: عمر حمامة** – تشرين الثاني 2026
+
+## الصفحة
+
+[`alraml.html`](alraml.html) ملف واحد يعمل بلا إنترنت. افتحه في أي متصفح. فيه سبعة تبويبات:
+
+| التبويب | المحتوى |
+|---|---|
+| نظرة عامة | الأرقام الرئيسية للحي |
+| الحي من الأعلى | الحي داخل حدوده، صور Sentinel-2 لعشر سنوات (ألوان حقيقية، NDVI، تعكّر البحر)، المبني والأخضر |
+| العمران والسكان | توسّع البناء (GHSL)، تقدير السكان (WorldPop)، المرافق بالاسم (OpenStreetMap)، الارتفاع عن البحر |
+| المناخ | الأمطار منذ 1940 (ERA5)، حرارة سطح الأرض صيفاً (Landsat) |
+| الهواء والنشاط | ثاني أكسيد النيتروجين (Sentinel-5P)، الإضاءة الليلية (NASA Black Marble) |
+| المخاطر | الزلزال، كثافة البناء، تلوث البحر |
+| المصادر | كل المصادر والروابط |
+
+كل قسم يذكر ما يبني عليه ومدى الثقة به.
+
+[`draw_boundary.html`](draw_boundary.html) أداة لرسم حدود الحي وتعديلها على صورة القمر الصناعي.
+
+## حدود الحي
+
+الحدود في `data_extra/boundary_A.geojson` (دون حي القدس) و`boundary_B.geojson` (مع حي القدس، تقريبية).
+رُسمت من وصف محلي: السكة الحديد شمالاً وغرباً، الطريق المتجه جنوباً حتى مصب نهر الكبير الشمالي شرقاً، والبحر جنوباً. ليست حدوداً رسمية.
+
+## إعادة بناء الصفحة
+
+يحتاج [uv](https://docs.astral.sh/uv/). كل سكربت يثبّت ما يحتاجه بنفسه.
+
+```bash
+uv run download.py              # Sentinel-2، 2017–2026
+uv run download_no2.py          # Sentinel-5P NO2 السنوي (~3.4 GB تُقرأ، ~200 KB تُحفظ)
+uv run extra/rain.py            # ERA5 عبر Open-Meteo
+uv run extra/dem.py             # Copernicus DEM
+uv run extra/lst.py             # Landsat 8/9
+uv run extra/built_pop.py       # GHSL و WorldPop
+uv run extra/osm.py             # OpenStreetMap
+uv run extra/osm_places.py
+uv run extra/nightlights.py     # يحتاج رمز NASA Earthdata (انظر أدناه)
+uv run build_page.py            # يبني alraml.html
+uv run extra/check.py           # يعيد حساب الأرقام من البيانات ويقارنها بالصفحة
+uv run extra/draw_tool.py       # يبني draw_boundary.html
+```
+
+منطقة الدراسة في `extra/common.py` و`download.py` (`BBOX`).
+
+### رمز NASA Earthdata
+
+الإضاءة الليلية تحتاج حساباً مجانياً في Earthdata ورمز تنزيل. احفظ الرمز في `~/.earthdata_token` (مجلد المستخدم)، **لا في مجلد المشروع**، ولا ترفعه إلى git.
+
+## المصادر والتراخيص
+
+- Sentinel-2 و Sentinel-5P و Copernicus DEM و ERA5: © Copernicus / ESA / ECMWF، استعمال حر مع ذكر المصدر.
+- Landsat: USGS، ملكية عامة.
+- GHSL: مركز الأبحاث المشترك الأوروبي (JRC)، CC BY 4.0.
+- WorldPop: جامعة ساوثهامبتون، CC BY 4.0.
+- NASA Black Marble (VNP46A4): ناسا، استعمال حر.
+- OpenStreetMap: © مساهمو OpenStreetMap، ترخيص ODbL.
+- Open-Meteo: مجاني للاستعمال **غير التجاري** فقط.
+
+الأرقام المنقولة من التقارير (الزلزال، تلوث البحر) موثّقة بروابطها في قسم المصادر داخل الصفحة.
