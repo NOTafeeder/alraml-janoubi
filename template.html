@@ -197,6 +197,20 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* ---- risks ---- */
+.risk-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+.risk-sum a{display:block;text-decoration:none;color:var(--ink);background:var(--chip);border-radius:14px;padding:12px 14px;
+  border-inline-start:4px solid var(--c,var(--accent));transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+.risk-sum a:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);background:var(--accent-soft)}
+.risk-sum b{display:block;font-size:1.02rem}
+.risk-sum .v{display:block;font-size:1.3rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--c,var(--accent));margin:2px 0}
+.risk-sum small{color:var(--muted);font-size:.82rem;line-height:1.5;display:block}
+.risk-card h2{border-inline-start:4px solid var(--c,var(--accent));padding-inline-start:10px}
+.risk-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start;margin-top:12px}
+.dmg{position:absolute;width:16px;height:16px;border-radius:50%;background:#d0453a;border:2px solid #fff;
+  transform:translate(-50%,-50%);animation:pulse 2s ease-in-out infinite;z-index:2}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2px rgba(0,0,0,.35),0 0 0 0 rgba(208,69,58,.55)}50%{box-shadow:0 0 0 2px rgba(0,0,0,.35),0 0 0 10px rgba(208,69,58,0)}}
 </style>
 </head>
 <body>
@@ -424,15 +438,97 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 
 <section class="card" id="risk">
   <h2>مخاطر يمكن أن تؤثر على الحي</h2>
-  <table>
-    <thead><tr><th>الخطر</th><th>ما نعرفه</th><th>الثقة</th></tr></thead>
-    <tbody>
-      <tr><td>الزلازل</td><td>زلزال 6 شباط 2023: تقييم أولي بصور الأقمار الصناعية (Pléiades، 7 شباط) رصد مباني مدمّرة أو متضررة بشدة شرق الرمل الجنوبي، ومباني يُحتمل تضررها غربه. في المحافظة كلها: 805 وفيات ونحو 100 مبنى منهار (المحافظ، 28 شباط 2023).</td><td><span class="conf high">عالية</span></td></tr>
-      <tr><td>كثافة البناء</td><td>الصور تُظهر مبانٍ متلاصقة بلا فراغات خضراء تقريباً. هذا يزيد خطر الحرائق وصعوبة الإخلاء والإنقاذ وقت الكوارث، ويرفع حرارة الحي صيفاً.</td><td><span class="conf mid">متوسطة – استنتاج من الصورة</span></td></tr>
-      <tr><td>تلوث البحر</td><td>دراسة من جامعة تشرين (عيّنات حزيران 2022) في منطقة الكورنيش الجنوبي، أي ساحل الحي، وجدت أعلى تراكيز النترات والأمونيوم عند أكبر مصبّين للصرف الصحي، وتقلّ كلما ابتعدنا عنهما. تقرير PAX (تشرين الأول 2021) وثّق تسرب أكثر من 10,000 طن من الفيول من محطة كهرباء بانياس، جنوب اللاذقية، في آب 2021، ووصل إلى تركيا وقبرص، ووصف الساحل السوري بأنه بؤرة تلوث مرتبطة بالنزاع.</td><td><span class="conf mid">متوسطة</span></td></tr>
-    </tbody>
-  </table>
-  <div class="basis">يبني على: تقييم الأضرار بالأقمار الصناعية (International Charter، 7 شباط 2023)، Syriac Press، دراسة جامعة تشرين، تقرير PAX. تحققنا من كل رقم هنا في مصدره. القائمة ليست شاملة.</div>
+  <p>ثمانية مؤشرات محسوبة <b>داخل حدود الحي</b> من البيانات المفتوحة نفسها التي تبني عليها الصفحة. هي <b>مؤشرات</b> تساعد على الفهم والسؤال، <b>لا تقييم رسمي للمخاطر</b>. لون كل بطاقة يدل على <b>قوة الدليل</b>، لا على درجة الخطورة.</p>
+  <div class="risk-sum" id="riskSum"></div>
+  <div class="legend" style="margin-top:8px">
+    <span><i class="sw" style="background:var(--good)"></i>دليل قوي: قياس مباشر أو تقرير موثّق</span>
+    <span><i class="sw" style="background:var(--accent)"></i>دليل متوسط: نموذج أو قياس غير مباشر</span>
+    <span><i class="sw" style="background:var(--warn)"></i>دليل محدود: بيانات ناقصة أو تغيّر أصغر من دقة القياس</span>
+  </div>
+</section>
+
+<section class="card risk-card" id="rk-quake">
+  <h2>1. الزلازل</h2>
+  <div class="grid" id="rkQuakeStats"></div>
+  <div class="risk-row">
+    <div class="mapwrap" id="rkQuakeWrap"><img id="rkQuakeImg" alt="موقع الأضرار الموثقة"></div>
+    <div>
+      <p>زلزال 6 شباط 2023: تقييم أولي بصور Pléiades في 7 شباط رصد <b>مباني مدمّرة أو متضررة بشدة شرق الرمل الجنوبي</b>، والنقطة المحددة في التقرير تقع <b>داخل حدود الحي، في حي القدس</b> (النقطة الحمراء). وذكر التقرير مباني يُحتمل تضررها غرب الحي وقرب مشفى تشرين، خارج حدود هذه الخريطة. في المحافظة كلها: 805 وفيات ونحو 100 مبنى منهار.</p>
+      <p><b>ماذا يعني للسكان:</b> معظم مباني الحي قديمة ومتلاصقة، وهذا يزيد خطر الانهيار المتسلسل وصعوبة الإنقاذ والإخلاء.</p>
+    </div>
+  </div>
+  <div class="basis">يبني على: تقرير International Charter (7 شباط 2023، إحداثيات الصفحات 4–7)، Syriac Press (28 شباط 2023)، وGHSL لعمر البناء (أول ظهور للبناء في خلية 90 م، لا عمر كل مبنى). <span class="conf high">دليل قوي على الضرر</span><span class="conf mid">متوسط في عمر المباني</span></div>
+</section>
+
+<section class="card risk-card" id="rk-flood">
+  <h2>2. البحر والفيضان</h2>
+  <div class="grid" id="rkFloodStats"></div>
+  <div class="risk-row">
+    <div>
+      <div class="mapwrap" id="rkFloodWrap"><img id="rkFloodImg" alt="مبانٍ على أرض منخفضة"></div>
+      <div class="legend"><span><i class="sw" style="background:#c46e50"></i>مبانٍ على أرض ≤ 5 م</span><span><i class="sw" style="background:#ecc896"></i>أرض مكشوفة ≤ 5 م</span><span><i class="sw" style="background:#96b4c3"></i>ماء</span></div>
+    </div>
+    <div>
+      <h3>أيام المطر الغزير (50 ملم أو أكثر في يوم واحد)</h3>
+      <svg id="rkRainChart" viewBox="0 0 640 200" width="100%" role="img" aria-label="أيام المطر الغزير لكل سنة"></svg>
+      <p id="rkRainText"></p>
+    </div>
+  </div>
+  <p><b>ماذا يعني للسكان:</b> المباني الساحلية المنخفضة أول ما يتأثر بالعواصف البحرية وتجمّع مياه الأمطار، والأيام شديدة المطر صارت أكثر تكراراً، كما في فيضانات ريف اللاذقية في 7–9 شباط 2026.</p>
+  <div class="basis">يبني على: نموذج الارتفاع Copernicus DEM (يقيس الأسطح، فالأرض تحت المباني أخفض مما يظهر، أي أن الرقم حدّ أدنى)، تصنيف المبني من Sentinel-2 آب 2026، وأمطار ERA5 اليومية (خلية داخل اليابسة شرق المدينة، تقلل من شدة العواصف القصيرة). <span class="conf mid">دليل متوسط</span></div>
+</section>
+
+<section class="card risk-card" id="rk-shore">
+  <h2>3. تآكل الشاطئ</h2>
+  <div class="grid" id="rkShoreStats"></div>
+  <div class="mapwrap" id="rkShoreWrap" style="margin-top:12px"><img id="rkShoreImg" alt="تغيّر خط الشاطئ"></div>
+  <div class="legend"><span><i class="sw" style="background:#c85a50"></i>يابسة صارت بحراً</span><span><i class="sw" style="background:#6ea06e"></i>بحر صار يابسة</span><span><i class="sw" style="background:#a0becd"></i>بحر</span></div>
+  <p id="rkShoreText"></p>
+  <div class="basis">يبني على: قناع الماء من صور Sentinel-2 (10 م)، أغلبية ثلاث سنوات في كل فترة (2017–2019 و2024–2026) لتقليل أثر الموج ولمعان الشمس، ضمن الحي و150 م حوله. التغيّر الأصغر من بكسل واحد (10 م) لا يُعتدّ به. <span class="conf low">دليل محدود</span></div>
+</section>
+
+<section class="card risk-card" id="rk-heat">
+  <h2>4. الحر الشديد</h2>
+  <div class="grid" id="rkHeatStats"></div>
+  <div class="risk-row">
+    <div>
+      <div class="mapwrap" id="rkHeatWrap"><img id="rkHeatImg" alt="حرارة السطح صيفاً"></div>
+      <div class="legend"><span style="display:inline-block;width:140px;height:12px;border-radius:3px;background:linear-gradient(to left,#f0ecdc,#f4c896,#de8c64,#b05046)"></span><span>30 ← 50 °م</span></div>
+    </div>
+    <p><b>ماذا يعني للسكان:</b> الأسطح والأزقة الأشد حرارة تجعل البيوت أسخن ليلاً ونهاراً، والخطر أكبر على كبار السن والأطفال وفي أوقات انقطاع الكهرباء. البقع الأبرد هي الأراضي الخضراء والبحر.</p>
+  </div>
+  <div class="basis">يبني على: متوسط حرارة السطح من Landsat 8/9 لصيف 2022–2026 (مشهد صافٍ لكل صيف، نحو 11 صباحاً). حرارة السطح لا حرارة الهواء. <span class="conf high">دليل قوي</span></div>
+</section>
+
+<section class="card risk-card" id="rk-drought">
+  <h2>5. الجفاف ونقص المطر</h2>
+  <div class="grid" id="rkDroughtStats"></div>
+  <h3>عدد السنوات الجافة في كل عقد (مطر أقل من 75٪ من المعدل)</h3>
+  <svg id="rkDroughtChart" viewBox="0 0 640 200" width="100%" role="img" aria-label="السنوات الجافة لكل عقد"></svg>
+  <p id="rkDroughtText"></p>
+  <div class="basis">يبني على: مجموع المطر لكل سنة مطرية (أيلول–آب) من ERA5، والمعدل 1991–2020. <span class="conf high">دليل قوي في المقارنة بين السنوات</span></div>
+</section>
+
+<section class="card risk-card" id="rk-power">
+  <h2>6. الكهرباء والطاقة</h2>
+  <div class="grid" id="rkPowerStats"></div>
+  <p><b>ماذا يعني للسكان:</b> انخفاض الضوء ليلاً يدل غالباً على ساعات انقطاع أطول وعلى الاعتماد على المولدات، وهذا يزيد أثر الحر وتلوث الهواء المحلي. التفاصيل والمخطط في تبويب «الهواء والنشاط».</p>
+  <div class="basis">يبني على: NASA Black Marble (VNP46A4) داخل حدود الحي. الضوء ليلاً مؤشر غير مباشر على الكهرباء. <span class="conf mid">دليل متوسط</span></div>
+</section>
+
+<section class="card risk-card" id="rk-pollution">
+  <h2>7. تلوث الهواء والبحر</h2>
+  <div class="grid" id="rkPollStats"></div>
+  <p>دراسة من جامعة تشرين (عيّنات حزيران 2022) في منطقة الكورنيش الجنوبي، أي ساحل الحي، وجدت أعلى تراكيز النترات والأمونيوم عند أكبر مصبّين للصرف الصحي، وتقلّ كلما ابتعدنا عنهما. تقرير PAX (تشرين الأول 2021) وثّق تسرب أكثر من 10,000 طن من الفيول من محطة كهرباء بانياس، جنوب اللاذقية، في آب 2021، ووصل إلى تركيا وقبرص.</p>
+  <p><b>ماذا يعني للسكان:</b> السباحة والصيد قرب مصبات الصرف قد يضرّان بالصحة. الهواء فوق الحي أكثر تلوثاً من البحر المجاور، لكنه أنظف بكثير من دمشق.</p>
+  <div class="basis">يبني على: Sentinel-5P لـ NO₂ (تبويب «الهواء والنشاط»)، دراسة جامعة تشرين، تقرير PAX. <span class="conf high">دليل قوي في القياسات</span><span class="conf mid">متوسط في الأثر الصحي</span></div>
+</section>
+
+<section class="card risk-card" id="rk-services">
+  <h2>8. الخدمات</h2>
+  <div class="grid" id="rkServStats"></div>
+  <p><b>ماذا يعني للسكان:</b> المرافق القليلة لعدد كبير من السكان تعني صفوفاً مكتظة وانتظاراً أطول، وتزيد أهمية مستشفى دراج والمستوصفات القريبة وقت الكوارث.</p>
+  <div class="basis">يبني على: المرافق المسجلة في OpenStreetMap داخل الحدود، وتقدير السكان من WorldPop. OpenStreetMap قد يكون ناقصاً، فالأرقام الحقيقية قد تكون أعلى. <span class="conf low">دليل محدود</span></div>
 </section>
 
 </div>
@@ -646,7 +742,7 @@ if (!hideIf("night", !EXTRA.night)) {
 
 // ---- the neighbourhood: numbers inside the boundary + outlines on every map ----
 const HOOD = EXTRA.hood || {};
-const OUTLINE_WRAPS = {s2: "img", elev: "elevImg", lst: "lstImg", bp: ["builtImg", "popImg"], no2: "no2img", night: "nightImg"};
+const OUTLINE_WRAPS = {s2: ["img", "rkQuakeImg", "rkFloodImg", "rkShoreImg"], elev: "elevImg", lst: ["lstImg", "rkHeatImg"], bp: ["builtImg", "popImg"], no2: "no2img", night: "nightImg"};
 function drawOutlines(v){
   const H = HOOD[v]; if (!H) return;
   document.querySelectorAll(".hood-ol").forEach(e => e.remove());
@@ -810,6 +906,94 @@ if (!NO2.years.length) {
   const showNo2 = () => { const y = Y[+r.value]; im.src = y.img; document.getElementById("no2yrLabel").textContent = y.year; };
   r.oninput = showNo2; showNo2();
 }
+
+// ---- risks tab ----
+(function(){
+  const K = EXTRA.risks; if (!K) return;
+  const C = {high: "var(--good)", mid: "var(--accent)", low: "var(--warn)"};
+  const pct = v => `${fmt(v)}٪`;
+  const q = K.quake, f = K.flood, hr = K.heavy_rain, sh = K.shore, ht = K.heat, dr = K.drought, pw = K.power, sv = K.services;
+  const N = NO2.years.length ? NO2.years : null;
+  const no2x = N ? Math.round(100 * (N.reduce((s, y) => s + y.alraml, 0) / N.reduce((s, y) => s + y.sea, 0) - 1)) : null;
+  const recentDry = dr.dry_years.filter(y => y.y >= 2014).length;
+  const shoreClear = Math.abs(sh.net_shift_m) >= 10;
+  const sum = [
+    ["rk-quake", "الزلازل", "high", pct(q.old_share), "من مساحة البناء الحالية كانت قائمة قبل 1975؛ ضرر موثّق في 2023 داخل الحي"],
+    ["rk-flood", "البحر والفيضان", "mid", `${fmt(f.low_built_km2)} كم²`, `مبانٍ على أرض ≤ 5 م (${pct(f.low_built_pct_of_built)} من المبني)؛ أيام المطر الغزير تتزايد`],
+    ["rk-shore", "تآكل الشاطئ", "low", shoreClear ? `${fmt(sh.net_shift_m)} م` : "لا تغيّر واضح", `بين ${sh.early} و${sh.late}، ضمن دقة 10 م`],
+    ["rk-heat", "الحر الشديد", "high", pct(ht.hot45_pct), `من أرض الحي تتجاوز 45 °م صيفاً (متوسط ${ht.years})`],
+    ["rk-drought", "الجفاف", "high", `${fmt(recentDry)} من ${fmt(dr.dry_years.length)}`, "من السنوات الجافة جداً منذ 1941 جاءت بعد 2014"],
+    ["rk-power", "الكهرباء", "mid", pw ? `${fmt(Math.round(100 * (pw.last.hood / pw.first.hood - 1)))}٪` : "—", pw ? `الضوء ليلاً في الحي ${pw.first.year}–${pw.last.year}` : ""],
+    ["rk-pollution", "التلوث", "high", no2x != null ? `+${fmt(no2x)}٪` : "—", "NO₂ فوق الحي مقارنة بالبحر؛ مصبات صرف على ساحل الحي"],
+    ["rk-services", "الخدمات", "low", `${fmt(sv.per10k.edu || 0)}`, "مرفق تعليمي لكل 10,000 نسمة (OpenStreetMap)"],
+  ];
+  document.getElementById("riskSum").innerHTML = sum.map(([id, t, c, v, d]) =>
+    `<a href="#${id}" style="--c:${C[c]}"><b>${t}</b><span class="v">${v}</span><small>${d}</small></a>`).join("");
+  sum.forEach(([id, , c]) => document.getElementById(id).style.setProperty("--c", C[c]));
+
+  const W = YEARS[YEARS.length - 1];
+  // 1. earthquakes
+  stats("rkQuakeStats", [
+    [pct(q.old_share), "من مساحة البناء في 2020 كانت قائمة في 1975"],
+    [pct(q.cover_pct), "من أرض الحي مغطاة بالمباني (GHSL 2020)"],
+    ["805", "وفاة في محافظة اللاذقية، 6 شباط 2023"]]);
+  sizeMap("rkQuakeWrap", f.w, f.h);
+  document.getElementById("rkQuakeImg").src = W.rgb;
+  q.points.filter(p => p.in_map).forEach(p => document.getElementById("rkQuakeWrap").insertAdjacentHTML("beforeend",
+    `<span class="dmg" style="left:${100 * p.x}%;top:${100 * p.y}%" title="${esc(p.name)}: ${esc(p.level)}"></span>`));
+  // 2. sea and flood
+  stats("rkFloodStats", [
+    [`${fmt(f.low_built_km2)} كم²`, "مبانٍ على أرض لا يتجاوز ارتفاعها 5 م"],
+    [pct(f.low_built_pct_of_built), "من مساحة المبني في الحي"],
+    [`${fmt(hr.p1961_1990)} ← ${fmt(hr.p2016_now)}`, "أيام مطر ≥ 50 ملم في السنة: 1961–1990 ← منذ 2016"]]);
+  sizeMap("rkFloodWrap", f.w, f.h); document.getElementById("rkFloodImg").src = f.img;
+  const ys = hr.years.filter(y => y.y >= 1961);
+  groups(document.getElementById("rkRainChart"), ys.map(y => y.y), [[ys.map(y => y.days50), i => ys[i].y >= 2016 ? "var(--warn)" : "var(--bar)"]],
+         Math.max(4, Math.max(...ys.map(y => y.days50))), "");
+  document.getElementById("rkRainText").textContent =
+    `في المتوسط ${fmt(hr.p1961_1990)} يوم في السنة بين 1961 و1990، ثم ${fmt(hr.p1991_2020)} بين 1991 و2020، و${fmt(hr.p2016_now)} منذ 2016. السنة المطرية ${hr.last.y} وحدها فيها ${fmt(hr.last.days50)} أيام.`;
+  // 3. shoreline
+  stats("rkShoreStats", [
+    [`${fmt(Math.round(sh.eroded_m2 / 100) * 100)} م²`, `يابسة صارت بحراً (${sh.early} ← ${sh.late})`],
+    [`${fmt(Math.round(sh.accreted_m2 / 100) * 100)} م²`, "بحر صار يابسة"],
+    [`${fmt(sh.net_shift_m)} م`, `متوسط تراجع الشاطئ على ${fmt(sh.coast_km)} كم`]]);
+  sizeMap("rkShoreWrap", sh.w, sh.h); document.getElementById("rkShoreImg").src = sh.img;
+  document.getElementById("rkShoreText").textContent = shoreClear
+    ? `تراجع الشاطئ في المتوسط ${fmt(sh.net_shift_m)} م، وهو أكبر من دقة الصور.`
+    : `التغيّر الصافي نحو ${fmt(sh.net_shift_m)} م في المتوسط، أي أقل من بكسل واحد (10 م): لا يظهر تآكل واضح للشاطئ في هذه الفترة. البقع الحمراء والخضراء الصغيرة غالباً موج ورمل متحرك، لا تغيّر دائم.`;
+  // 4. heat
+  stats("rkHeatStats", [
+    [`${fmt(ht.mean)} °م`, `متوسط حرارة سطح اليابسة في الحي، صيف ${ht.years}`],
+    [pct(ht.hot45_pct), "من أرض الحي ≥ 45 °م"],
+    [`${fmt(ht.max)} °م`, "أسخن البقع (أعلى 2٪)"]]);
+  sizeMap("rkHeatWrap", ht.w, ht.h); document.getElementById("rkHeatImg").src = ht.img;
+  // 5. drought
+  stats("rkDroughtStats", [
+    [`${fmt(dr.threshold)} ملم`, "حدّ السنة الجافة (75٪ من معدل 1991–2020)"],
+    [dr.dry_years.map(y => y.y).join("، "), "السنوات الجافة منذ 1941"],
+    [`${fmt(recentDry)} من ${fmt(dr.dry_years.length)}`, "منها بعد 2014"]]);
+  groups(document.getElementById("rkDroughtChart"), dr.by_decade.map(d => `${d.d}s`),
+         [[dr.by_decade.map(d => d.dry), i => dr.by_decade[i].d >= 2010 ? "var(--warn)" : "var(--bar)"]],
+         Math.max(3, Math.max(...dr.by_decade.map(d => d.dry))), "");
+  const lastDry = dr.dry_years[dr.dry_years.length - 1];
+  document.getElementById("rkDroughtText").textContent =
+    `حتى 1980 لم تمرّ سنة واحدة بهذا الجفاف. منذ 2014 تكررت ${fmt(recentDry)} مرات، آخرها ${lastDry.y} (${fmt(lastDry.mm)} ملم)، أجفّ سنة في السلسلة كلها.`;
+  // 6. electricity
+  if (pw) stats("rkPowerStats", [
+    [fmt(pw.first.hood), `الضوء ليلاً في الحي ${pw.first.year} (نانوواط/سم²/ستيراديان)`],
+    [fmt(pw.last.hood), `في ${pw.last.year}`],
+    [`${pw.low.year}`, `أخفت سنة (${fmt(pw.low.hood)})`]]);
+  // 7. pollution
+  if (N) { const L = N[N.length - 1]; stats("rkPollStats", [
+    [`+${fmt(no2x)}٪`, `NO₂ فوق الحي مقارنة بالبحر، متوسط ${N[0].year}–${L.year}`],
+    [fmt(L.alraml), `NO₂ فوق الحي ${L.year} (µmol/m²)؛ دمشق ${fmt(L.damascus)}`],
+    ["2", "أكبر مصبّين للصرف على كورنيش الحي (جامعة تشرين 2022)"]]); }
+  // 8. services
+  stats("rkServStats", [
+    [fmt(sv.counts.edu || 0), `مرافق تعليمية؛ ${fmt(sv.per10k.edu || 0)} لكل 10,000 نسمة`],
+    [fmt(sv.counts.health || 0), `مرافق صحية؛ ${fmt(sv.per10k.health || 0)} لكل 10,000 نسمة`],
+    [`≈ ${fmt(Math.round(sv.people / 100) * 100)}`, `سكان الحي المقدّرون ${sv.year}`]]);
+})();
 
 // soft fade whenever a map image changes
 new MutationObserver(ms => ms.forEach(m => { const el = m.target;

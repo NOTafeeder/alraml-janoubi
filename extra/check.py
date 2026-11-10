@@ -123,5 +123,28 @@ check(len(scripts) == 1, f"exactly one inline script ({len(scripts)})")
 check("Content-Security-Policy" in html and "default-src 'none'" in html, "Content-Security-Policy blocks outside resources")
 check(not _re.search(r"<(script|link|iframe)[^>]+(src|href)=\"https?:", html), "no external scripts, styles or frames")
 check("esc(p.n)" in html and "esc(s.street)" in html and "esc(p.landmark.name)" in html, "OpenStreetMap names are escaped before insertion")
+# 10. risks tab: recompute key indicators independently
+K = EXTRA.get("risks")
+check(K is not None, "risks indicators present")
+if K:
+    rd2 = json.loads((D / "rain_daily.json").read_text())
+    tt = np.array(rd2["time"], dtype="datetime64[D]"); mm2 = np.array([np.nan if v is None else v for v in rd2["mm"]], float)
+    yy = tt.astype("datetime64[Y]").astype(int) + 1970; mo2 = tt.astype("datetime64[M]").astype(int) % 12 + 1
+    hy2 = np.where(mo2 >= 9, yy + 1, yy)
+    d50 = {y: int((mm2[hy2 == y] >= 50).sum()) for y in range(1961, 1991)}
+    check(abs(np.mean(list(d50.values())) - K["heavy_rain"]["p1961_1990"]) < 0.01, f"heavy-rain days 1961-1990 = {np.mean(list(d50.values())):.2f}")
+    norm2 = np.mean([np.nansum(mm2[hy2 == y]) for y in range(1991, 2021)])
+    dry2 = [y for y in range(1941, int(hy2.max()) + 1) if (hy2 == y).sum() >= 365 and np.nansum(mm2[hy2 == y]) < 0.75 * round(norm2)]
+    check(dry2 == [d["y"] for d in K["drought"]["dry_years"]], f"dry years {dry2}")
+    check(K["drought"]["threshold"] == round(0.75 * round(norm2)), "drought threshold = 75% of normal")
+    q2 = K["quake"]; inside_pts = [p for p in q2["points"] if p["in_hood"]]
+    check(len(inside_pts) == 1 and inside_pts[0]["name"] == "شرق الرمل الجنوبي", "documented 2023 damage point lies inside the boundary")
+    check(abs(q2["lat_check"] if "lat_check" in q2 else q2["points"][0]["lat"] - (35 + 30/60 + 26/3600)) < 1e-9, "damage point uses the report's coordinates 35°30'26\"N 35°49'1\"E")
+    check(0 < K["flood"]["low_built_km2"] <= K["flood"]["low_km2"] <= EXTRA["hood"]["B"]["land_km2"], "low-lying built land <= low land <= hood land")
+    check(0 <= K["heat"]["hot45_pct"] <= 100 and 25 < K["heat"]["mean"] < 55, f"heat: mean {K['heat']['mean']} C, {K['heat']['hot45_pct']}% >= 45 C")
+    hb = EXTRA["hood"]["B"]; sv2 = K["services"]
+    check(abs(sv2["per10k"].get("edu", 0) - round(hb["facilities"]["edu"] / hb["pop"][-1]["people"] * 1e4, 1)) < 0.01, "schools per 10,000 people")
+    check(K["shore"]["eroded_m2"] % 100 == 0 and K["shore"]["accreted_m2"] % 100 == 0, "shoreline change counted in whole 10 m pixels")
+
 fails = [r for r in res if r[0] == "FAIL"]; warns = [r for r in res if r[0] == "WARN"]
 print(f"\nTOTAL {len([r for r in res if r[0]=='PASS'])} passed, {len(fails)} failed, {len(warns)} warnings")

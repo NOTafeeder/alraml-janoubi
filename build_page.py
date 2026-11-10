@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["rasterio", "numpy", "pillow", "pyproj", "shapely"]
+# dependencies = ["rasterio", "numpy", "pillow", "pyproj", "shapely", "scipy"]
 # ///
 """Builds alraml.html: an offline Arabic page with the Sentinel-2 images and sourced facts."""
 import base64, io, json
@@ -114,6 +114,11 @@ if (ROOT / "data_extra" / "boundary_A.geojson").exists():
         st["outline"] = {k: hood.outline_norm(v, *g) for k, g in grids.items()}
         extra["hood"][v] = st
         print("hood", v, "land", st["land_km2"], "km2, people", st["pop"][-1], "facilities", st.get("facilities"))
+
+# --- risk indicators for the neighbourhood ---
+import risks
+if extra.get("hood", {}).get("B"):
+    extra["risks"] = risks.build(extra)
 
 w, h = Image.open(next(OUT.glob("*/rgb_*.png"))).size
 html = (ROOT / "template.html").read_text(encoding="utf-8")
