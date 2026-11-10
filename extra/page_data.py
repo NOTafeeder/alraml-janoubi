@@ -197,6 +197,15 @@ def osm():
             pts.append({"x": float(x), "y": float(y), "c": cat[k], "k": k, "n": name,
                         "lat": round(la, 6), "lon": round(lo, 6), "osm": f'{e["type"]}/{e["id"]}'})
             counts[k] = counts.get(k, 0) + 1
+    # names given by residents (data_extra/local_names.json), keyed by OpenStreetMap id
+    ln = D / "local_names.json"
+    if ln.exists():
+        local = {k: v for k, v in json.loads(ln.read_text(encoding="utf-8")).items() if not k.startswith("_")}
+        for p in pts:
+            if p["osm"] in local and not p["n"]:
+                p["n"] = local[p["osm"]]["name"]
+                p["local"] = local[p["osm"]].get("source", "معلومة محلية")
+
     # for unnamed places: the nearest named streets (OSM has no neighbourhood boundaries here)
     segs = []
     for e in d["elements"]:

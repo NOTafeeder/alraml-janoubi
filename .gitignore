@@ -15,6 +15,7 @@ data_extra/*
 !data_extra/boundary_B.geojson
 !data_extra/boundary_A_auto.geojson
 !data_extra/boundary_B_auto.geojson
+!data_extra/local_names.json
 
 # local leftovers
 *.log

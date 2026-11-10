@@ -261,6 +261,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   .topbar.open+.nav-backdrop{opacity:1;visibility:visible;transition:opacity .25s ease}
 }
 .about-contact .mail-alt{margin:8px 0 0;font-size:.84rem;color:var(--muted)}
+.local-tag{display:inline-block;margin-inline-start:6px;font-size:.72rem;padding:0 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);vertical-align:middle}
 </style>
 </head>
 <body>
@@ -365,7 +366,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <h3>المرافق بالاسم</h3>
   <p class="sub">مرّر المؤشر أو اضغط على اسم لترى مكانه على الخريطة، والعكس. الأرقام نفسها على الخريطة وفي القائمة. للمرافق التي لا اسم لها في الخريطة نذكر أقرب شارعين مسمّيين وأقرب مرفق معروف، لتسهيل السؤال عنها؛ هذا وصف للمكان لا اسم المرفق. لا توجد في OpenStreetMap حدود أحياء داخل المدينة هنا، فلا نذكر اسم الحي. إن عرفت الاسم، أضفه عبر رابط «افتحه في OpenStreetMap» ثم أعد تشغيل <code>extra/osm.py</code> و<code>build_page.py</code>.</p>
   <div id="osmList" class="osm-list"></div>
-  <div class="basis">يبني على: OpenStreetMap، خريطة يرسمها متطوعون (© مساهمو OpenStreetMap، ترخيص ODbL)، نسخة <span id="osmTime"></span>. ما هو مرسوم موثوق في الغالب، لكن الخريطة قد تكون <b>ناقصة</b>: غياب مرفق عنها لا يعني أنه غير موجود. الأسماء كما كتبها المتطوعون (أُبقي الجزء العربي من الأسماء المكتوبة بلغتين)، وقد تكون فيها أخطاء أو أسماء قديمة؛ المكان المرسوم مرتين (نقطة ومبنى) يظهر مرة واحدة.<span class="conf mid">ثقة متوسطة – قد تكون ناقصة</span></div>
+  <div class="basis">يبني على: OpenStreetMap، خريطة يرسمها متطوعون (© مساهمو OpenStreetMap، ترخيص ODbL)، نسخة <span id="osmTime"></span>. ما هو مرسوم موثوق في الغالب، لكن الخريطة قد تكون <b>ناقصة</b>: غياب مرفق عنها لا يعني أنه غير موجود. الأسماء كما كتبها المتطوعون (أُبقي الجزء العربي من الأسماء المكتوبة بلغتين)، والأسماء المعلَّمة «اسم من أهالي الحي» أضافها أهالي الحي وغير موجودة في OpenStreetMap، وقد تكون فيها أخطاء أو أسماء قديمة؛ المكان المرسوم مرتين (نقطة ومبنى) يظهر مرة واحدة.<span class="conf mid">ثقة متوسطة – قد تكون ناقصة</span></div>
 </section>
 
 <section class="card" id="elev">
@@ -957,7 +958,7 @@ if (!hideIf("osm", !EXTRA.osm)) {
   document.getElementById("osmList").innerHTML = GROUPS.map(([g, t]) => {
     const items = pts.filter(p => p.c === g); if (!items.length) return "";
     return `<div class="osm-group"><h4><i class="sw" style="background:${col[g]};border-radius:50%"></i>${t} <span>(${fmt(items.length)})</span></h4><ol>` +
-      items.map(p => `<li data-i="${p.i}" tabindex="0" value="${p.i}"${p.n ? "" : ' class="unnamed"'}>${label(p)}<small> — ${KIND[p.k]}</small>${where(p)}</li>`).join("") + "</ol></div>";
+      items.map(p => `<li data-i="${p.i}" tabindex="0" value="${p.i}"${p.n ? "" : ' class="unnamed"'}>${label(p)}<small> — ${KIND[p.k]}</small>${p.local ? `<span class="local-tag" title="${esc(p.local)}">اسم من أهالي الحي</span>` : ""}${where(p)}</li>`).join("") + "</ol></div>";
   }).join("");
   const tip = document.getElementById("osmTip"), svgEl = document.querySelector("#osmWrap svg");
   function mark(i, on){
