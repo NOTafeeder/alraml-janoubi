@@ -667,8 +667,8 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <div class="about-contact">
     <h3>هل أنت من أهالي الحي؟</h3>
     <p>إن كنت من أهالي الرمل الجنوبي وتريد المساعدة في تطوير هذا المشروع أو هذه الدراسة، بمعلومة أو تصحيح أو فكرة، فراسلني عبر البريد الإلكتروني:</p>
-    <p class="mail"><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=omarhamama17@gmail.com&amp;su=%D8%A7%D9%84%D8%B1%D9%85%D9%84%20%D8%A7%D9%84%D8%AC%D9%86%D9%88%D8%A8%D9%8A" target="_blank" rel="noopener" dir="ltr">omarhamama17@gmail.com</a></p>
-    <p class="mail-alt">يفتح رسالة جديدة في Gmail. تفضّل برنامج بريد آخر؟ <a href="mailto:omarhamama17@gmail.com">اضغط هنا</a></p>
+    <p class="mail"><a id="gmailBtn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=omarhamama17@gmail.com&amp;su=%D8%A7%D9%84%D8%B1%D9%85%D9%84%20%D8%A7%D9%84%D8%AC%D9%86%D9%88%D8%A8%D9%8A" target="_blank" rel="noopener" dir="ltr">omarhamama17@gmail.com</a></p>
+    <p class="mail-alt">يفتح رسالة جديدة في تطبيق Gmail على الهاتف، أو في Gmail على الحاسوب. تفضّل برنامج بريد آخر؟ <a href="mailto:omarhamama17@gmail.com">اضغط هنا</a></p>
   </div>
   <p class="about-closing">واللّٰه وليُّ التوفيق</p>
 </section>
@@ -1117,6 +1117,31 @@ if (!NO2.years.length) {
     [fmt(sv.counts.edu || 0), `مرافق تعليمية؛ ${fmt(sv.per10k.edu || 0)} لكل 10,000 نسمة`],
     [fmt(sv.counts.health || 0), `مرافق صحية؛ ${fmt(sv.per10k.health || 0)} لكل 10,000 نسمة`],
     [`≈ ${fmt(Math.round(sv.people / 100) * 100)}`, `سكان الحي المقدّرون ${sv.year}`]]);
+})();
+
+// email button: open the Gmail app on phones, Gmail on the web elsewhere
+(function(){
+  const btn = document.getElementById("gmailBtn"); if (!btn) return;
+  const to = "omarhamama17@gmail.com", subject = "الرمل الجنوبي";
+  const web = btn.href;
+  const ua = navigator.userAgent;
+  const isAndroid = /Android/i.test(ua), isIOS = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  btn.addEventListener("click", e => {
+    if (isAndroid) {
+      // Android intent: the Gmail app with a new message; Chrome falls back to Gmail on the web if the app is missing
+      e.preventDefault();
+      location.href = "intent:" + to + "?subject=" + encodeURIComponent(subject) +
+        "#Intent;scheme=mailto;action=android.intent.action.SENDTO;package=com.google.android.gm;" +
+        "S.browser_fallback_url=" + encodeURIComponent(web) + ";end";
+    } else if (isIOS) {
+      // iPhone: Gmail's own link scheme; if the app is not installed the page stays, so open the web version
+      e.preventDefault();
+      const t0 = Date.now();
+      location.href = "googlegmail:///co?to=" + encodeURIComponent(to) + "&subject=" + encodeURIComponent(subject);
+      setTimeout(() => { if (!document.hidden && Date.now() - t0 < 2500) location.href = web; }, 1500);
+    }
+    // computers: the normal link opens Gmail on the web in a new tab
+  });
 })();
 
 // soft fade whenever a map image changes
