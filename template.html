@@ -250,7 +250,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 </div></div>
 <main>
 
-<div class="tabpanel" id="g-sky" role="tabpanel"><div class="group"><i>1</i>الحي من الأعلى</div>
+<div class="tabpanel" id="g-sky" role="tabpanel" hidden><div class="group"><i>1</i>الحي من الأعلى</div>
 
 <section class="card" id="hood">
   <h2>الحي داخل حدوده</h2>
@@ -270,7 +270,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
     <input type="range" id="yr" min="0" step="1" aria-label="السنة">
     <b id="yrLabel"></b>
   </div>
-  <div class="mapwrap"><img id="img" alt="صورة القمر الصناعي للرمل الجنوبي"></div>
+  <div class="mapwrap"><img decoding="async" id="img" alt="صورة القمر الصناعي للرمل الجنوبي"></div>
   <div class="legend" id="legNdvi" hidden>
     <span><i class="sw" style="background:#8c5a32"></i>مبانٍ وأرض جرداء</span>
     <span><i class="sw" style="background:#ebe1a0"></i>نبات قليل</span>
@@ -296,7 +296,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 
 </div>
 
-<div class="tabpanel" id="g-urban" role="tabpanel"><div class="group"><i>2</i>العمران والسكان</div>
+<div class="tabpanel" id="g-urban" role="tabpanel" hidden><div class="group"><i>2</i>العمران والسكان</div>
 
 <section class="card" id="growth">
   <h2>توسّع العمران والسكان</h2>
@@ -306,12 +306,12 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
     <div>
       <h3>متى بُنيت كل منطقة (أول فترة تجاوز فيها البناء 20٪ من الخلية)</h3>
-      <div class="mapwrap" id="builtWrap"><img id="builtImg" alt="عمر البناء"></div>
+      <div class="mapwrap" id="builtWrap"><img decoding="async" id="builtImg" alt="عمر البناء"></div>
       <div class="legend" id="builtLegend"></div>
     </div>
     <div>
       <h3>كثافة السكان المقدّرة، <span id="popYear"></span></h3>
-      <div class="mapwrap" id="popWrap"><img id="popImg" alt="كثافة السكان"></div>
+      <div class="mapwrap" id="popWrap"><img decoding="async" id="popImg" alt="كثافة السكان"></div>
       <div class="legend"><span style="display:inline-block;width:140px;height:12px;border-radius:3px;background:linear-gradient(to left,#fff7d6,#fdc470,#ec7034,#b42828,#640a28)"></span><span id="popScale"></span></div>
     </div>
   </div>
@@ -338,7 +338,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 <section class="card" id="elev">
   <h2>الارتفاع عن سطح البحر والتعرّض للبحر</h2>
   <div class="grid" id="elevStats"></div>
-  <div class="mapwrap" id="elevWrap"><img id="elevImg" alt="خريطة الارتفاع"></div>
+  <div class="mapwrap" id="elevWrap"><img decoding="async" id="elevImg" alt="خريطة الارتفاع"></div>
   <div class="legend">
     <span><i class="sw" style="background:#d73027"></i>0–2 م</span>
     <span><i class="sw" style="background:#fc8d59"></i>2–5 م</span>
@@ -354,7 +354,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 
 </div>
 
-<div class="tabpanel" id="g-climate" role="tabpanel"><div class="group"><i>3</i>المناخ</div>
+<div class="tabpanel" id="g-climate" role="tabpanel" hidden><div class="group"><i>3</i>المناخ</div>
 
 <section class="card" id="rain">
   <h2>الأمطار: ما سُجّل فعلاً منذ 1940</h2>
@@ -380,7 +380,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   </div>
   <h3>الخريطة</h3>
   <div class="controls"><input type="range" id="lstYr" min="0" step="1" aria-label="السنة"><b id="lstLabel"></b></div>
-  <div class="mapwrap" id="lstWrap"><img id="lstImg" alt="خريطة حرارة السطح"></div>
+  <div class="mapwrap" id="lstWrap"><img decoding="async" id="lstImg" alt="خريطة حرارة السطح"></div>
   <div class="legend" style="margin-top:6px">
     <span style="display:inline-block;width:160px;height:12px;border-radius:3px;background:linear-gradient(to left,#313695,#74add1,#ffffbf,#f46d43,#a50026)"></span>
     <span>25 ← 55 °م</span><span><i class="sw" style="background:#c8c8c8"></i>غيوم أو بلا بيانات</span>
@@ -390,7 +390,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 
 </div>
 
-<div class="tabpanel" id="g-env" role="tabpanel"><div class="group"><i>4</i>الهواء والنشاط</div>
+<div class="tabpanel" id="g-env" role="tabpanel" hidden><div class="group"><i>4</i>الهواء والنشاط</div>
 
 <section class="card" id="air">
   <h2>تلوث الهواء: ثاني أكسيد النيتروجين NO₂ من القمر Sentinel-5P</h2>
@@ -409,7 +409,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
     <b id="no2yrLabel"></b>
   </div>
   <div class="mapwrap" id="no2wrap" style="aspect-ratio:1/1;max-width:520px">
-    <img id="no2img" alt="خريطة NO2 حول اللاذقية">
+    <img decoding="async" id="no2img" alt="خريطة NO2 حول اللاذقية">
     <span id="no2ban" style="position:absolute;transform:translate(-50%,-140%);font-size:12px;font-weight:600;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000">بانياس ▾</span>
     <span id="no2mark" style="position:absolute;width:14px;height:14px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #000;transform:translate(-50%,-50%)" title="الرمل الجنوبي"></span>
   </div>
@@ -442,7 +442,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <h3>الخريطة</h3>
   <div class="controls"><input type="range" id="nightYr" min="0" step="1" aria-label="السنة"><b id="nightLabel"></b></div>
   <div class="mapwrap" id="nightWrap" style="max-width:520px">
-    <img id="nightImg" alt="خريطة الإضاءة الليلية">
+    <img decoding="async" id="nightImg" alt="خريطة الإضاءة الليلية">
     <span id="nightMark" style="position:absolute;width:14px;height:14px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #000;transform:translate(-50%,-50%)" title="الرمل الجنوبي"></span>
   </div>
   <div class="legend" style="margin-top:6px">
@@ -456,7 +456,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 
 </div>
 
-<div class="tabpanel" id="g-risk" role="tabpanel"><div class="group"><i>5</i>المخاطر</div>
+<div class="tabpanel" id="g-risk" role="tabpanel" hidden><div class="group"><i>5</i>المخاطر</div>
 
 <section class="card" id="risk">
   <h2>مخاطر يمكن أن تؤثر على الحي</h2>
@@ -473,7 +473,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <h2>1. الزلازل</h2>
   <div class="grid" id="rkQuakeStats"></div>
   <div class="risk-row">
-    <div class="mapwrap" id="rkQuakeWrap"><img id="rkQuakeImg" alt="موقع الأضرار الموثقة"></div>
+    <div class="mapwrap" id="rkQuakeWrap"><img decoding="async" id="rkQuakeImg" alt="موقع الأضرار الموثقة"></div>
     <div>
       <p>زلزال 6 شباط 2023: تقييم أولي بصور Pléiades في 7 شباط رصد <b>مباني مدمّرة أو متضررة بشدة شرق الرمل الجنوبي</b>، والنقطة المحددة في التقرير تقع <b>داخل حدود الحي، في حي القدس</b> (النقطة الحمراء). وذكر التقرير مباني يُحتمل تضررها غرب الحي وقرب مشفى تشرين، خارج حدود هذه الخريطة. في المحافظة كلها: 805 وفيات ونحو 100 مبنى منهار.</p>
       <p><b>ماذا يعني للسكان:</b> معظم مباني الحي قديمة ومتلاصقة، وهذا يزيد خطر الانهيار المتسلسل وصعوبة الإنقاذ والإخلاء.</p>
@@ -487,7 +487,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <div class="grid" id="rkFloodStats"></div>
   <div class="risk-row">
     <div>
-      <div class="mapwrap" id="rkFloodWrap"><img id="rkFloodImg" alt="مبانٍ على أرض منخفضة"></div>
+      <div class="mapwrap" id="rkFloodWrap"><img decoding="async" id="rkFloodImg" alt="مبانٍ على أرض منخفضة"></div>
       <div class="legend"><span><i class="sw" style="background:#c46e50"></i>مبانٍ على أرض ≤ 5 م</span><span><i class="sw" style="background:#ecc896"></i>أرض مكشوفة ≤ 5 م</span><span><i class="sw" style="background:#96b4c3"></i>ماء</span></div>
     </div>
     <div>
@@ -503,7 +503,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 <section class="card risk-card" id="rk-shore">
   <h2>3. تآكل الشاطئ</h2>
   <div class="grid" id="rkShoreStats"></div>
-  <div class="mapwrap" id="rkShoreWrap" style="margin-top:12px"><img id="rkShoreImg" alt="تغيّر خط الشاطئ"></div>
+  <div class="mapwrap" id="rkShoreWrap" style="margin-top:12px"><img decoding="async" id="rkShoreImg" alt="تغيّر خط الشاطئ"></div>
   <div class="legend"><span><i class="sw" style="background:#c85a50"></i>يابسة صارت بحراً</span><span><i class="sw" style="background:#6ea06e"></i>بحر صار يابسة</span><span><i class="sw" style="background:#a0becd"></i>بحر</span></div>
   <p id="rkShoreText"></p>
   <div class="basis">يبني على: قناع الماء من صور Sentinel-2 (10 م)، أغلبية ثلاث سنوات في كل فترة (2017–2019 و2024–2026) لتقليل أثر الموج ولمعان الشمس، ضمن الحي و150 م حوله. التغيّر الأصغر من بكسل واحد (10 م) لا يُعتدّ به. <span class="conf low">دليل محدود</span></div>
@@ -514,7 +514,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
   <div class="grid" id="rkHeatStats"></div>
   <div class="risk-row">
     <div>
-      <div class="mapwrap" id="rkHeatWrap"><img id="rkHeatImg" alt="حرارة السطح صيفاً"></div>
+      <div class="mapwrap" id="rkHeatWrap"><img decoding="async" id="rkHeatImg" alt="حرارة السطح صيفاً"></div>
       <div class="legend"><span style="display:inline-block;width:140px;height:12px;border-radius:3px;background:linear-gradient(to left,#f0ecdc,#f4c896,#de8c64,#b05046)"></span><span>30 ← 50 °م</span></div>
     </div>
     <p><b>ماذا يعني للسكان:</b> الأسطح والأزقة الأشد حرارة تجعل البيوت أسخن ليلاً ونهاراً، والخطر أكبر على كبار السن والأطفال وفي أوقات انقطاع الكهرباء. البقع الأبرد هي الأراضي الخضراء والبحر.</p>
@@ -555,7 +555,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 
 </div>
 
-<div class="tabpanel" id="g-src" role="tabpanel"><div class="group"><i>6</i>المصادر</div>
+<div class="tabpanel" id="g-src" role="tabpanel" hidden><div class="group"><i>6</i>المصادر</div>
 
 <section class="card" id="sources">
   <h2>المصادر</h2>
@@ -575,11 +575,12 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
     <li>PAX، Environment and Conflict Alert 4: Baniyas، تشرين الأول 2021: https://paxforpeace.nl/publications/environment-and-conflict-alert-4-baniyas/</li>
     <li>فيضانات شباط 2026 في اللاذقية – عنب بلدي: https://english.enabbaladi.net/archives/2026/02/casualties-and-damage-as-rainstorm-floods-northern-syria-camps/</li>
   </ul>
-  <p class="sub">جُمعت المعلومات في تشرين الثاني 2026. الصفحة تعمل بلا إنترنت؛ الروابط للرجوع إلى المصادر فقط.</p>
+  <p class="sub">جُمعت المعلومات في تشرين الثاني 2026. الروابط للرجوع إلى المصادر فقط.</p>
+  <!--__OFFLINE_NOTE__-->
 </section>
 </div>
 
-<div class="tabpanel" id="g-about" role="tabpanel"><div class="group"><i>7</i>عني</div>
+<div class="tabpanel" id="g-about" role="tabpanel" hidden><div class="group"><i>7</i>عني</div>
 <section class="card about" id="about">
   <div class="about-head">
     <div class="about-avatar" aria-hidden="true">ع</div>
@@ -636,7 +637,7 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 </section>
 </div>
 </main>
-<footer>إعداد وتصميم: <b>عمر حمامة</b> · تشرين الثاني 2026 · صفحة تعمل بلا إنترنت، مبنية من بيانات مفتوحة؛ التفاصيل والروابط في قسم المصادر.<br>© 2026 عمر حمامة. يجوز نسخ الصفحة وتعديلها واستعمالها بشرط ذكر الاسم (ترخيص <a href="https://creativecommons.org/licenses/by/4.0/deed.ar" target="_blank" rel="noopener">CC BY 4.0</a>). البيانات من مصادرها تبقى خاضعة لتراخيصها.</footer>
+<footer>إعداد وتصميم: <b>عمر حمامة</b> · تشرين الثاني 2026 · صفحة مبنية من بيانات مفتوحة؛ التفاصيل والروابط في قسم المصادر.<br>© 2026 عمر حمامة. يجوز نسخ الصفحة وتعديلها واستعمالها بشرط ذكر الاسم (ترخيص <a href="https://creativecommons.org/licenses/by/4.0/deed.ar" target="_blank" rel="noopener">CC BY 4.0</a>). البيانات من مصادرها تبقى خاضعة لتراخيصها.<!--__OFFLINE_NOTE__--></footer>
 <button class="iconbtn totop" id="totop" aria-label="إلى أعلى الصفحة" title="إلى أعلى">↑</button>
 
 <script>
@@ -645,6 +646,13 @@ const EXTRA = __EXTRA__;
 const HA0 = (EXTRA.hood || {}).B;   // the whole neighbourhood (al-Quds included), used next to study-area numbers
 const MONTHS = ["كانون2","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين1","تشرين2","كانون1"];
 const fmt = n => n.toLocaleString("ar-SY");
+// images in a hidden tab wait until the tab is opened (keeps the first load small)
+const setSrc = (el, url) => {
+  if (!el) return;
+  const panel = el.closest(".tabpanel");
+  if (panel && panel.hidden) { el.dataset.src = url; el.removeAttribute("src"); } else { delete el.dataset.src; el.src = url; }
+};
+const loadPanelImages = panel => panel.querySelectorAll("img[data-src]").forEach(i => { i.src = i.dataset.src; delete i.dataset.src; });
 // text from outside sources (OpenStreetMap names) is always escaped before it goes into HTML
 const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
 
@@ -653,7 +661,7 @@ const img = document.getElementById("img"), yr = document.getElementById("yr");
 yr.max = YEARS.length - 1; yr.value = idx;
 function show(){
   const y = YEARS[idx];
-  img.src = y[mode];
+  setSrc(img, y[mode]);
   document.getElementById("yrLabel").textContent = y.year;
   document.getElementById("sceneInfo").textContent = `تاريخ الالتقاط: ${y.date} — المشهد: ${y.scene}`;
   document.getElementById("legNdvi").hidden = mode !== "ndvi";
@@ -752,7 +760,7 @@ if (!hideIf("elev", !EXTRA.elev)) {
     [`${fmt(HA0.elev.below5)}٪`, "من أرض الحي أقل من 5 م"],
     [`${fmt(HA0.elev.median)} م`, "الارتفاع الوسيط لأرض الحي"]] : []).concat([
     [`${fmt(E.below5)}٪`, "منطقة الصورة كلها: أقل من 5 م"]]));
-  sizeMap("elevWrap", E.w, E.h); document.getElementById("elevImg").src = E.img;
+  sizeMap("elevWrap", E.w, E.h); setSrc(document.getElementById("elevImg"), E.img);
 }
 
 // land surface temperature
@@ -768,7 +776,7 @@ if (!hideIf("lst", !EXTRA.lst)) {
          [[Ys.map(y => y.built), "var(--warn)"], [Ys.map(y => y.veg), "var(--good)"], [Ys.map(y => y.sea), "var(--bar)"]], 50, "°", 20);
   sizeMap("lstWrap", L.w, L.h);
   const r = document.getElementById("lstYr"); r.max = Ys.length - 1; r.value = Ys.length - 1;
-  const showL = () => { const y = Ys[+r.value]; document.getElementById("lstImg").src = y.img;
+  const showL = () => { const y = Ys[+r.value]; setSrc(document.getElementById("lstImg"), y.img);
     document.getElementById("lstLabel").textContent = `${y.year} — ${y.date}، ${y.id}`; };
   r.oninput = showL; showL();
 }
@@ -789,10 +797,10 @@ if (!hideIf("growth", !EXTRA.bp)) {
   groups(document.getElementById("builtChart"), B.built.map(b => b.year),
          [[B.built.map(b => b.built_km2), i => B.built[i].year > 2020 ? "var(--bar2)" : "var(--bar)"]],
          Math.ceil(Math.max(...B.built.map(b => b.built_km2)) * 5) / 5, "");
-  sizeMap("builtWrap", B.w, B.h); document.getElementById("builtImg").src = B.built_img;
+  sizeMap("builtWrap", B.w, B.h); setSrc(document.getElementById("builtImg"), B.built_img);
   document.getElementById("builtLegend").innerHTML = Object.entries(B.first_colors).map(([y, c]) =>
     `<span><i class="sw" style="background:rgb(${c})"></i>${y === "1975" ? "1975 أو قبل" : y}${y === "2025" ? " (إسقاط)" : ""}</span>`).join("");
-  sizeMap("popWrap", B.w, B.h); document.getElementById("popImg").src = B.pop_img;
+  sizeMap("popWrap", B.w, B.h); setSrc(document.getElementById("popImg"), B.pop_img);
   document.getElementById("popYear").textContent = p1.year;
   document.getElementById("popScale").textContent = `0 ← ${fmt(B.pop_vmax)} نسمة/كم²`;
 }
@@ -815,7 +823,7 @@ if (!hideIf("night", !EXTRA.night)) {
   const mk = document.getElementById("nightMark"); mk.style.left = 100 * N.mark.x + "%"; mk.style.top = 100 * N.mark.y + "%";
   document.getElementById("nightScale").textContent = `0 ← ${fmt(N.vmax)} (مقياس لوغاريتمي) — ${N.bbox[0]}–${N.bbox[2]}° شرقاً، ${N.bbox[1]}–${N.bbox[3]}° شمالاً`;
   const r = document.getElementById("nightYr"); r.max = Ys.length - 1; r.value = Ys.length - 1;
-  const showN = () => { const y = Ys[+r.value]; document.getElementById("nightImg").src = y.img; document.getElementById("nightLabel").textContent = y.year; };
+  const showN = () => { const y = Ys[+r.value]; setSrc(document.getElementById("nightImg"), y.img); document.getElementById("nightLabel").textContent = y.year; };
   r.oninput = showN; showN();
 }
 
@@ -982,7 +990,7 @@ if (!NO2.years.length) {
   const bn = document.getElementById("no2ban"); bn.style.left = (100 * NO2.baniyas.x) + "%"; bn.style.top = (100 * NO2.baniyas.y) + "%";
   document.getElementById("no2scale").textContent = `${fmt(NO2.vmin)} ← ${fmt(NO2.vmax)} µmol/m² — المنطقة ${NO2.bbox[0]}–${NO2.bbox[2]}° شرقاً، ${NO2.bbox[1]}–${NO2.bbox[3]}° شمالاً`;
   r.max = Y.length - 1; r.value = Y.length - 1;
-  const showNo2 = () => { const y = Y[+r.value]; im.src = y.img; document.getElementById("no2yrLabel").textContent = y.year; };
+  const showNo2 = () => { const y = Y[+r.value]; setSrc(im, y.img); document.getElementById("no2yrLabel").textContent = y.year; };
   r.oninput = showNo2; showNo2();
 }
 
@@ -1017,7 +1025,7 @@ if (!NO2.years.length) {
     [pct(q.cover_pct), "من أرض الحي مغطاة بالمباني (GHSL 2020)"],
     ["805", "وفاة في محافظة اللاذقية، 6 شباط 2023"]]);
   sizeMap("rkQuakeWrap", f.w, f.h);
-  document.getElementById("rkQuakeImg").src = W.rgb;
+  setSrc(document.getElementById("rkQuakeImg"), W.rgb);
   q.points.filter(p => p.in_map).forEach(p => document.getElementById("rkQuakeWrap").insertAdjacentHTML("beforeend",
     `<span class="dmg" style="left:${100 * p.x}%;top:${100 * p.y}%" title="${esc(p.name)}: ${esc(p.level)}"></span>`));
   // 2. sea and flood
@@ -1025,7 +1033,7 @@ if (!NO2.years.length) {
     [`${fmt(f.low_built_km2)} كم²`, "مبانٍ على أرض لا يتجاوز ارتفاعها 5 م"],
     [pct(f.low_built_pct_of_built), "من مساحة المبني في الحي"],
     [`${fmt(hr.p1961_1990)} ← ${fmt(hr.p2016_now)}`, "أيام مطر ≥ 50 ملم في السنة: 1961–1990 ← منذ 2016"]]);
-  sizeMap("rkFloodWrap", f.w, f.h); document.getElementById("rkFloodImg").src = f.img;
+  sizeMap("rkFloodWrap", f.w, f.h); setSrc(document.getElementById("rkFloodImg"), f.img);
   const ys = hr.years.filter(y => y.y >= 1961);
   groups(document.getElementById("rkRainChart"), ys.map(y => y.y), [[ys.map(y => y.days50), i => ys[i].y >= 2016 ? "var(--warn)" : "var(--bar)"]],
          Math.max(4, Math.max(...ys.map(y => y.days50))), "");
@@ -1036,7 +1044,7 @@ if (!NO2.years.length) {
     [`${fmt(Math.round(sh.eroded_m2 / 100) * 100)} م²`, `يابسة صارت بحراً (${sh.early} ← ${sh.late})`],
     [`${fmt(Math.round(sh.accreted_m2 / 100) * 100)} م²`, "بحر صار يابسة"],
     [`${fmt(sh.net_shift_m)} م`, `متوسط تراجع الشاطئ على ${fmt(sh.coast_km)} كم`]]);
-  sizeMap("rkShoreWrap", sh.w, sh.h); document.getElementById("rkShoreImg").src = sh.img;
+  sizeMap("rkShoreWrap", sh.w, sh.h); setSrc(document.getElementById("rkShoreImg"), sh.img);
   document.getElementById("rkShoreText").textContent = shoreClear
     ? `تراجع الشاطئ في المتوسط ${fmt(sh.net_shift_m)} م، وهو أكبر من دقة الصور.`
     : `التغيّر الصافي نحو ${fmt(sh.net_shift_m)} م في المتوسط، أي أقل من بكسل واحد (10 م): لا يظهر تآكل واضح للشاطئ في هذه الفترة. البقع الحمراء والخضراء الصغيرة غالباً موج ورمل متحرك، لا تغيّر دائم.`;
@@ -1045,7 +1053,7 @@ if (!NO2.years.length) {
     [`${fmt(ht.mean)} °م`, `متوسط حرارة سطح اليابسة في الحي، صيف ${ht.years}`],
     [pct(ht.hot45_pct), "من أرض الحي ≥ 45 °م"],
     [`${fmt(ht.max)} °م`, "أسخن البقع (أعلى 2٪)"]]);
-  sizeMap("rkHeatWrap", ht.w, ht.h); document.getElementById("rkHeatImg").src = ht.img;
+  sizeMap("rkHeatWrap", ht.w, ht.h); setSrc(document.getElementById("rkHeatImg"), ht.img);
   // 5. drought
   stats("rkDroughtStats", [
     [`${fmt(dr.threshold)} ملم`, "حدّ السنة الجافة (75٪ من معدل 1991–2020)"],
@@ -1115,6 +1123,7 @@ new MutationObserver(ms => ms.forEach(m => { const el = m.target;
   function activate(id, target, push){
     const panel = document.getElementById(id) || panels[0];
     panels.forEach(p => p.hidden = p !== panel);
+    loadPanelImages(panel);
     main.classList.toggle("first", panel.id === "g-overview");
     links.forEach(a => { const on = a.getAttribute("href") === "#" + panel.id;
       a.classList.toggle("on", on); a.setAttribute("aria-selected", on); a.tabIndex = on ? 0 : -1;

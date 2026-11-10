@@ -128,6 +128,50 @@ def js(o, **kw):
     """JSON for inside <script>: '<' is escaped so data can never close the tag"""
     out = json.dumps(o, **kw).replace("<", "\\u003c")
     return out.replace(chr(0x2028), "\\u2028").replace(chr(0x2029), "\\u2029")
-html = html.replace("__YEARS__", js(years)).replace("__NO2__", js(no2)).replace("__EXTRA__", js(extra, ensure_ascii=False)).replace("__W__", str(w)).replace("__H__", str(h))
-(ROOT / "alraml.html").write_text(html, encoding="utf-8")
-print("wrote alraml.html", round(len(html) / 1e6, 2), "MB")
+
+
+# --- two outputs ---------------------------------------------------------------------------
+# alraml_offline.html: everything inside one file (works without internet, ~11 MB).
+# alraml.html: the web version. Images become small files in assets/, and the browser only
+# fetches the ones a visitor actually opens (lazy images in hidden tabs are not loaded).
+import base64, copy, hashlib
+
+ASSETS = ROOT / "assets"
+used = set()
+
+
+def externalize(o):
+    if isinstance(o, dict):
+        return {k: externalize(v) for k, v in o.items()}
+    if isinstance(o, list):
+        return [externalize(v) for v in o]
+    if isinstance(o, str) and o.startswith("data:image/png;base64,"):
+        raw = base64.b64decode(o.split(",", 1)[1])
+        name = hashlib.sha1(raw).hexdigest()[:16] + ".png"
+        ASSETS.mkdir(exist_ok=True)
+        f = ASSETS / name
+        if not f.exists():
+            f.write_bytes(raw)
+        used.add(name)
+        return "assets/" + name
+    return o
+
+
+def fill(page, Y, N, X, offline):
+    note = ("" if offline else
+            '<p class="sub offline-note">تريد الصفحة دون إنترنت؟ <a href="alraml_offline.html" download>نزّل النسخة الكاملة</a> (ملف واحد، نحو 11 ميغابايت).</p>')
+    return (page.replace("__YEARS__", js(Y)).replace("__NO2__", js(N)).replace("__EXTRA__", js(X, ensure_ascii=False))
+                .replace("__W__", str(w)).replace("__H__", str(h)).replace("<!--__OFFLINE_NOTE__-->", note))
+
+
+offline = fill(html, years, no2, extra, True)
+(ROOT / "alraml_offline.html").write_text(offline, encoding="utf-8")
+web = fill(html, externalize(copy.deepcopy(years)), externalize(copy.deepcopy(no2)), externalize(copy.deepcopy(extra)), False)
+web = web.replace("img-src data:;", "img-src 'self' data:;")
+(ROOT / "alraml.html").write_text(web, encoding="utf-8")
+for f in ASSETS.glob("*.png"):          # drop images no longer used by the page
+    if f.name not in used:
+        f.unlink()
+size = sum(f.stat().st_size for f in ASSETS.glob("*.png"))
+print("wrote alraml_offline.html", round(len(offline.encode()) / 1e6, 2), "MB")
+print("wrote alraml.html", round(len(web.encode()) / 1e6, 2), "MB +", len(used), "images in assets/,", round(size / 1e6, 2), "MB")
