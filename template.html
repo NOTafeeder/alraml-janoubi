@@ -137,7 +137,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
   <p class="byline">إعداد وتصميم: <b>عمر حمامة</b></p>
   <p>دراسة للحي من بيانات الأقمار الصناعية والبيانات المفتوحة: العمران والسكان، المناخ، الهواء، الإضاءة الليلية والمخاطر. كل قسم يذكر مصدره ومدى الثقة به.</p>
   <div class="facts" id="facts"></div>
-  <small>أرقام السكان والكثافة والعمران والارتفاع هنا لحي الرمل الجنوبي داخل حدوده (دون حي القدس)؛ الأرقام الأخرى لمحيط الحي كما يذكر كل قسم. اضغط على أي رقم لفتح قسمه، أو اختر تبويباً من الشريط في الأعلى.</small>
+  <small>أرقام السكان والكثافة والعمران والارتفاع هنا لحي الرمل الجنوبي داخل حدوده، ومنه حي القدس؛ الأرقام الأخرى لمحيط الحي كما يذكر كل قسم. اضغط على أي رقم لفتح قسمه، أو اختر تبويباً من الشريط في الأعلى.</small>
 </div></div>
 <main>
 
@@ -146,10 +146,10 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
 <section class="card" id="hood">
   <h2>الحي داخل حدوده</h2>
   <p>كل الأرقام هنا محسوبة <b>داخل حدود الرمل الجنوبي</b> فقط، على اليابسة، ومقارنة بمنطقة الدراسة كلها. الحدود مرسومة باللون الأحمر على كل خرائط الصفحة.</p>
-  <div class="controls"><span class="seg"><button id="hvA" aria-pressed="true">دون حي القدس</button><button id="hvB" aria-pressed="false">مع حي القدس (تقريبي)</button></span></div>
+  <div class="controls"><span class="seg"><button id="hvB" aria-pressed="true">الرمل الجنوبي كاملاً (مع حي القدس)</button><button id="hvA" aria-pressed="false">دون حي القدس، للمقارنة</button></span></div>
   <div class="grid" id="hoodStats"></div>
   <table id="hoodTable" style="margin-top:14px"><thead><tr><th>المقياس</th><th>داخل الحي</th><th>منطقة الدراسة كلها</th></tr></thead><tbody></tbody></table>
-  <div class="basis">كيف رُسمت الحدود: من وصفك. <b>الشمال الغربي: السكة الحديد</b> (من OpenStreetMap)، وهي تصل إلى الشاطئ عند طرف شارع العروبة؛ <b>الشرق: الطريق المتجه جنوباً</b> حتى <b>مصب نهر الكبير الشمالي</b>؛ <b>الجنوب: البحر</b>. نسخة «مع حي القدس» تمدّ الحد الشرقي إلى الطريق التالي شرقاً (خط طول 35.8177° تقريباً) ومجرى النهر جنوباً، كما يظهر في صورة آب 2026؛ لا نعرف أين ينتهي حي القدس فعلاً، فهي تقريبية. الحدود ليست رسمية؛ لا توجد حدود أحياء منشورة لهذه المنطقة. الإضاءة الليلية خلاياها 500 م، فقيمتها للحي تشمل أطرافاً من الأحياء المجاورة.<span class="conf mid">ثقة متوسطة في الحدود</span></div>
+  <div class="basis">كيف رُسمت الحدود: من وصفك. <b>الشمال الغربي: السكة الحديد</b> (من OpenStreetMap)، وهي تصل إلى الشاطئ عند طرف شارع العروبة؛ <b>الجنوب: البحر</b>. <b>حي القدس جزء من الرمل الجنوبي</b>، فالحد الشرقي هو الطريق الشمالي–الجنوبي شرق حي القدس (خط طول 35.8177° تقريباً)، ثم <b>مجرى نهر الكبير الشمالي</b> حتى مصبه، كما يظهر في صورة آب 2026. موضع الحد الشرقي لحي القدس تقريبي. نسخة «دون حي القدس» تتوقف عند الطريق المتجه جنوباً إلى المصب، وهي للمقارنة فقط. الحدود ليست رسمية؛ لا توجد حدود أحياء منشورة لهذه المنطقة. الإضاءة الليلية خلاياها 500 م، فقيمتها للحي تشمل أطرافاً من الأحياء المجاورة.<span class="conf mid">ثقة متوسطة في الحدود</span></div>
 </section>
 
 <section class="card" id="map">
@@ -394,7 +394,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
 <script>
 const YEARS = __YEARS__;
 const EXTRA = __EXTRA__;
-const HA0 = (EXTRA.hood || {}).A;   // the neighbourhood without al-Quds, used next to study-area numbers
+const HA0 = (EXTRA.hood || {}).B;   // the whole neighbourhood (al-Quds included), used next to study-area numbers
 const MONTHS = ["كانون2","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين1","تشرين2","كانون1"];
 const fmt = n => n.toLocaleString("ar-SY");
 
@@ -690,7 +690,7 @@ if (!hideIf("osm", !EXTRA.osm)) {
     if (li) { li.scrollIntoView({block: "nearest"}); li.classList.add("hl"); setTimeout(() => li.classList.remove("hl"), 1500); } });
   document.getElementById("osmTime").textContent = (O.timestamp || "").slice(0, 10);
 }
-if (EXTRA.hood && EXTRA.hood.A) { showHood("A"); } else { document.getElementById("hood").hidden = true;
+if (EXTRA.hood && EXTRA.hood.B) { showHood("B"); } else { document.getElementById("hood").hidden = true;
 }
 
 // NO2
@@ -740,7 +740,7 @@ if (!NO2.years.length) {
 (function(){
   const F = [], add = (v, t, href) => F.push(`<a class="fact" href="#${href}"><b>${v}</b><span>${t}</span></a>`);
   const E = EXTRA;
-  const HA = E.hood && E.hood.A;
+  const HA = E.hood && E.hood.B;
   if (HA) { const p = HA.pop[HA.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 100) / 10)} ألف`, `سكان الحي، تقدير ${p.year}`, "hood");
             add(`≈ ${fmt(Math.round(p.density / 100) / 10)} ألف`, "نسمة لكل كم² في الحي", "hood"); }
   else if (E.bp) { const p = E.bp.pop[E.bp.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 1000))} ألف`, `سكان مقدّرون ${p.year}`, "growth"); }
