@@ -192,7 +192,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
 <section class="card" id="growth">
   <h2>توسّع العمران والسكان</h2>
   <div class="grid" id="growthStats"></div>
-  <h3>مساحة الأسطح المبنية في منطقة الصورة</h3>
+  <h3>مساحة الأسطح المبنية: منطقة الصورة كلها (الحي وجيرانه)</h3>
   <svg id="builtChart" viewBox="0 0 640 220" width="100%" role="img" aria-label="مساحة البناء عبر السنين"></svg>
   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
     <div>
@@ -326,8 +326,9 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
   <h3>متوسط شدة الضوء ليلاً</h3>
   <svg id="nightChart" viewBox="0 0 640 230" width="100%" role="img" aria-label="شدة الإضاءة الليلية لكل سنة"></svg>
   <div class="legend">
-    <span><i class="sw" style="background:var(--warn)"></i>منطقة الحي (منطقة صورة القمر الصناعي)</span>
-    <span><i class="sw" style="background:var(--bar)"></i>اللاذقية وما حولها (منطقة الخريطة)</span>
+    <span><i class="sw" style="background:var(--warn)"></i>داخل حدود الحي</span>
+    <span><i class="sw" style="background:var(--bar)"></i>منطقة الصورة كلها (الحي وجيرانه)</span>
+    <span><i class="sw" style="background:var(--bar2)"></i>اللاذقية وريفها (منطقة الخريطة)</span>
   </div>
   <h3>الخريطة</h3>
   <div class="controls"><input type="range" id="nightYr" min="0" step="1" aria-label="السنة"><b id="nightLabel"></b></div>
@@ -393,6 +394,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
 <script>
 const YEARS = __YEARS__;
 const EXTRA = __EXTRA__;
+const HA0 = (EXTRA.hood || {}).A;   // the neighbourhood without al-Quds, used next to study-area numbers
 const MONTHS = ["كانون2","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين1","تشرين2","كانون1"];
 const fmt = n => n.toLocaleString("ar-SY");
 
@@ -420,10 +422,11 @@ show();
 // land stats
 const first = YEARS[0], last = YEARS[YEARS.length - 1];
 document.getElementById("landStats").innerHTML = `
-  <div class="stat"><b>${fmt(last.built_pct)}٪</b><span>مبانٍ وأرض جرداء من اليابسة، ${last.year}</span></div>
-  <div class="stat"><b>${fmt(last.veg_pct)}٪</b><span>أرض خضراء من اليابسة، ${last.year}</span></div>
+  <div class="stat"><b>${fmt(last.built_pct)}٪</b><span>مبانٍ وأرض جرداء، منطقة الصورة كلها، ${last.year}</span></div>
+  <div class="stat"><b>${fmt(last.veg_pct)}٪</b><span>أرض خضراء، منطقة الصورة كلها، ${last.year}</span></div>
   <div class="stat"><b>${fmt(first.veg_pct)}٪ ← ${fmt(last.veg_pct)}٪</b><span>الأخضر من ${first.year} إلى ${last.year}</span></div>
-  <div class="stat"><b>${fmt(last.land_km2)} كم²</b><span>مساحة اليابسة في الصورة</span></div>`;
+  <div class="stat"><b>${fmt(last.land_km2)} كم²</b><span>مساحة اليابسة في الصورة</span></div>` +
+  (HA0 ? `<div class="stat"><b>${fmt(HA0.s2[HA0.s2.length - 1].green_pct)}٪</b><span>أرض خضراء داخل حدود الحي، ${HA0.s2[HA0.s2.length - 1].year}</span></div>` : "");
 
 function bars(svg, labels, values, maxV, unit, highlight){
   const W = 640, H = +svg.getAttribute("viewBox").split(" ")[3], pad = 30, bot = 34;
@@ -494,11 +497,11 @@ if (!hideIf("rain", !EXTRA.rain)) {
 // elevation
 if (!hideIf("elev", !EXTRA.elev)) {
   const E = EXTRA.elev;
-  stats("elevStats", [
-    [`${fmt(E.below2)}٪`, "من اليابسة في الصورة أقل من 2 م فوق البحر"],
-    [`${fmt(E.below5)}٪`, "أقل من 5 م"],
-    [`${fmt(E.below10)}٪`, "أقل من 10 م"],
-    [`${fmt(E.median)} م`, "الارتفاع الوسيط لليابسة"]]);
+  stats("elevStats", (HA0 ? [
+    [`${fmt(HA0.elev.below2)}٪`, "من أرض الحي أقل من 2 م فوق البحر"],
+    [`${fmt(HA0.elev.below5)}٪`, "من أرض الحي أقل من 5 م"],
+    [`${fmt(HA0.elev.median)} م`, "الارتفاع الوسيط لأرض الحي"]] : []).concat([
+    [`${fmt(E.below5)}٪`, "منطقة الصورة كلها: أقل من 5 م"]]));
   sizeMap("elevWrap", E.w, E.h); document.getElementById("elevImg").src = E.img;
 }
 
@@ -525,11 +528,14 @@ if (!hideIf("growth", !EXTRA.bp)) {
   const B = EXTRA.bp, b0 = B.built[0], bObs = B.built.find(b => b.year === 2020) || B.built[B.built.length - 1];
   const p0 = B.pop[0], p1 = B.pop[B.pop.length - 1];
   const land = (YEARS[YEARS.length - 1] || {}).land_km2;
-  stats("growthStats", [
-    [`${fmt(b0.built_km2)} ← ${fmt(bObs.built_km2)} كم²`, `أسطح مبنية ${b0.year} ← ${bObs.year} (+${fmt(Math.round(100 * (bObs.built_km2 / b0.built_km2 - 1)))}٪)`],
-    [`≈ ${fmt(Math.round(p1.people / 1000) * 1000)}`, `سكان منطقة الصورة، تقدير ${p1.year}`],
-    [`≈ ${fmt(Math.round(p1.people / land / 100) * 100)}`, `نسمة لكل كم² من اليابسة، ${p1.year}`],
-    [`حتى ${fmt(Math.round(p1.max_density / 1000) * 1000)}`, "نسمة لكل كم² في أكثف خلية (100 م)"]]);
+  const hp = HA0 && HA0.pop[HA0.pop.length - 1], hb0 = HA0 && HA0.built[0], hb20 = HA0 && (HA0.built.find(x => x.year === 2020) || HA0.built[HA0.built.length - 1]);
+  stats("growthStats", (HA0 ? [
+    [`≈ ${fmt(Math.round(hp.people / 100) * 100)}`, `سكان الحي داخل حدوده، تقدير ${hp.year}`],
+    [`≈ ${fmt(Math.round(hp.density / 100) * 100)}`, `نسمة لكل كم² في الحي، ${hp.year}`],
+    [`+${fmt(Math.round(100 * (hb20.built_km2 / hb0.built_km2 - 1)))}٪`, `أسطح مبنية في الحي ${hb0.year}–${hb20.year}`]] : []).concat([
+    [`≈ ${fmt(Math.round(p1.people / 1000) * 1000)}`, `منطقة الصورة كلها (الحي وجيرانه، ${fmt(land)} كم² يابسة)، ${p1.year}`],
+    [`+${fmt(Math.round(100 * (bObs.built_km2 / b0.built_km2 - 1)))}٪`, `أسطح مبنية في منطقة الصورة كلها ${b0.year}–${bObs.year}`],
+    [`حتى ${fmt(Math.round(p1.max_density / 1000) * 1000)}`, "نسمة لكل كم² في أكثف خلية (100 م)"]]));
   groups(document.getElementById("builtChart"), B.built.map(b => b.year),
          [[B.built.map(b => b.built_km2), i => B.built[i].year > 2020 ? "var(--bar2)" : "var(--bar)"]],
          Math.ceil(Math.max(...B.built.map(b => b.built_km2)) * 5) / 5, "");
@@ -545,13 +551,15 @@ if (!hideIf("growth", !EXTRA.bp)) {
 if (!hideIf("night", !EXTRA.night)) {
   const N = EXTRA.night, Ys = N.years, f = Ys[0], l = Ys[Ys.length - 1];
   const peak = Ys.reduce((a, b) => b.mean_area > a.mean_area ? b : a), low = Ys.reduce((a, b) => b.mean_area < a.mean_area ? b : a);
-  stats("nightStats", [
-    [fmt(l.mean_area), `منطقة الحي، ${l.year} (نانوواط/سم²/ستيراديان)`],
-    [`${fmt(Math.round(100 * (l.mean_area / f.mean_area - 1)))}٪`, `التغيّر من ${f.year} إلى ${l.year}`],
-    [`${low.year}`, `أخفت سنة (${fmt(low.mean_area)})`],
-    [`${peak.year}`, `أسطع سنة (${fmt(peak.mean_area)})`]]);
+  const hn = HA0 && HA0.night, hnF = hn && hn[0], hnL = hn && hn[hn.length - 1];
+  stats("nightStats", (hn ? [
+    [fmt(hnL.hood), `داخل حدود الحي، ${hnL.year} (نانوواط/سم²/ستيراديان)`],
+    [`${fmt(Math.round(100 * (hnL.hood / hnF.hood - 1)))}٪`, `تغيّر الحي من ${hnF.year} إلى ${hnL.year}`]] : []).concat([
+    [`${fmt(Math.round(100 * (l.mean_area / f.mean_area - 1)))}٪`, `تغيّر منطقة الصورة كلها من ${f.year} إلى ${l.year}`],
+    [`${low.year}`, `أخفت سنة لمنطقة الصورة (${fmt(low.mean_area)})`],
+    [`${peak.year}`, `أسطع سنة لمنطقة الصورة (${fmt(peak.mean_area)})`]]));
   groups(document.getElementById("nightChart"), Ys.map(y => y.year),
-         [[Ys.map(y => y.mean_area), "var(--warn)"], [Ys.map(y => y.mean_map), "var(--bar)"]],
+         (hn ? [[hn.map(y => y.hood), "var(--warn)"]] : []).concat([[Ys.map(y => y.mean_area), "var(--bar)"], [Ys.map(y => y.mean_map), "var(--bar2)"]]),
          Math.ceil(Math.max(...Ys.map(y => y.mean_area)) / 10) * 10, "");
   sizeMap("nightWrap", N.w, N.h);
   const mk = document.getElementById("nightMark"); mk.style.left = 100 * N.mark.x + "%"; mk.style.top = 100 * N.mark.y + "%";
@@ -733,8 +741,8 @@ if (!NO2.years.length) {
   const F = [], add = (v, t, href) => F.push(`<a class="fact" href="#${href}"><b>${v}</b><span>${t}</span></a>`);
   const E = EXTRA;
   const HA = E.hood && E.hood.A;
-  if (HA) { const p = HA.pop[HA.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 1000))} ألف`, `سكان الحي، تقدير ${p.year}`, "hood");
-            add(`≈ ${fmt(Math.round(p.density / 1000))} ألف`, "نسمة لكل كم² في الحي", "hood"); }
+  if (HA) { const p = HA.pop[HA.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 100) / 10)} ألف`, `سكان الحي، تقدير ${p.year}`, "hood");
+            add(`≈ ${fmt(Math.round(p.density / 100) / 10)} ألف`, "نسمة لكل كم² في الحي", "hood"); }
   else if (E.bp) { const p = E.bp.pop[E.bp.pop.length - 1]; add(`≈ ${fmt(Math.round(p.people / 1000))} ألف`, `سكان مقدّرون ${p.year}`, "growth"); }
   if (HA) { const b = HA.built, a = b[0], c = b.find(x => x.year === 2020) || b[b.length - 1]; add(`+${fmt(Math.round(100 * (c.built_km2 / a.built_km2 - 1)))}٪`, `أسطح مبنية في الحي ${a.year}–${c.year}`, "hood"); }
   if (HA) add(`${fmt(Math.round(HA.elev.below5))}٪`, "من أرض الحي أقل من 5 م فوق البحر", "hood");
@@ -742,7 +750,8 @@ if (!NO2.years.length) {
   if (E.rain) add(`${fmt(E.rain.normal)} ملم`, "مطر سنوي (1991–2020)", "rain");
   if (E.lst) { const Y = E.lst.years, d = Y.reduce((s, y) => s + y.built - y.sea, 0) / Y.length; add(`+${fmt(Math.round(d))} °م`, "سطح المباني أسخن من البحر صيفاً", "lst"); }
   if (NO2.years.length) { const Y = NO2.years, m = k => Y.reduce((s, y) => s + y[k], 0) / Y.length; add(`+${fmt(Math.round(100 * (m("alraml") / m("sea") - 1)))}٪`, "NO₂ فوق الحي مقارنة بالبحر", "air"); }
-  if (E.night) { const Y = E.night.years, a = Y[0], b = Y[Y.length - 1]; add(`${fmt(Math.round(100 * (b.mean_area / a.mean_area - 1)))}٪`, `الإضاءة الليلية ${a.year}–${b.year}`, "night"); }
+  if (HA && HA.night) { const Y = HA.night, a = Y[0], b = Y[Y.length - 1]; add(`${fmt(Math.round(100 * (b.hood / a.hood - 1)))}٪`, `الإضاءة الليلية في الحي ${a.year}–${b.year}`, "night"); }
+  else if (E.night) { const Y = E.night.years, a = Y[0], b = Y[Y.length - 1]; add(`${fmt(Math.round(100 * (b.mean_area / a.mean_area - 1)))}٪`, `الإضاءة الليلية ${a.year}–${b.year}`, "night"); }
   document.getElementById("facts").innerHTML = F.join("");
 
   document.querySelectorAll("div.basis").forEach(div => {
