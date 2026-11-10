@@ -233,14 +233,46 @@ details.basis[open] .body{animation:fadeUp .35s ease both}
 .about-contact .mail{margin:8px 0 0}
 .about-contact .mail a{display:inline-block;font-size:1.1rem;font-weight:600;text-decoration:none;color:var(--accent-ink);background:var(--accent);padding:6px 18px;border-radius:999px;transition:transform .2s ease,box-shadow .2s ease}
 .about-contact .mail a:hover{transform:translateY(-2px);box-shadow:0 8px 20px color-mix(in srgb,var(--accent) 35%,transparent)}
+
+/* ---- menu button (three lines) for phones ---- */
+.menubtn{display:none;position:relative;padding:0}
+.menubtn span{position:absolute;inset-inline-start:9px;width:16px;height:2px;border-radius:2px;background:currentColor;
+  transition:transform .3s ease,opacity .2s ease,top .3s ease}
+.menubtn span:nth-child(1){top:11px}.menubtn span:nth-child(2){top:16px}.menubtn span:nth-child(3){top:21px}
+.topbar.open .menubtn span:nth-child(1){top:16px;transform:rotate(45deg)}
+.topbar.open .menubtn span:nth-child(2){opacity:0}
+.topbar.open .menubtn span:nth-child(3){top:16px;transform:rotate(-45deg)}
+.curtab{display:none;color:var(--muted);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-backdrop{display:none}
+@media (max-width:760px){
+  .menubtn{display:inline-block}
+  .brand{display:inline!important;font-size:.98rem}
+  .curtab{display:block;flex:1;min-width:0}
+  .curtab::before{content:"·";margin-inline-end:6px}
+  .topbar .nav{position:fixed;top:56px;inset-inline:0;flex-direction:column;gap:2px;padding:10px 12px 14px;
+    background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 16px 30px rgba(0,0,0,.18);
+    max-height:calc(100vh - 56px);overflow-y:auto;
+    transform:translateY(-8px);opacity:0;visibility:hidden;transition:transform .25s ease,opacity .25s ease,visibility 0s linear .25s;z-index:30}
+  .topbar.open .nav{transform:none;opacity:1;visibility:visible;transition:transform .25s ease,opacity .25s ease}
+  .topbar .nav a{padding:11px 14px;border-radius:12px;font-size:1rem}
+  .topbar .nav a.on{background:var(--accent);color:var(--accent-ink)}
+  .nav-backdrop{display:block;position:fixed;inset:56px 0 0 0;background:rgba(0,0,0,.25);opacity:0;visibility:hidden;
+    transition:opacity .25s ease,visibility 0s linear .25s;z-index:25}
+  .topbar.open+.nav-backdrop{opacity:1;visibility:visible;transition:opacity .25s ease}
+}
 </style>
 </head>
 <body>
 <div class="topbar"><div class="in">
+  <button class="iconbtn menubtn" id="menuBtn" aria-label="قائمة الأقسام" aria-expanded="false" aria-controls="nav">
+    <span></span><span></span><span></span>
+  </button>
   <a class="brand" href="#g-overview">الرمل الجنوبي</a>
+  <span class="curtab" id="curTab" aria-hidden="true"></span>
   <nav class="nav" id="nav" role="tablist" aria-label="أقسام الصفحة"><a role="tab" href="#g-overview">نظرة عامة</a><a role="tab" href="#g-sky">الحي من الأعلى</a><a role="tab" href="#g-urban">العمران والسكان</a><a role="tab" href="#g-climate">المناخ</a><a role="tab" href="#g-env">الهواء والنشاط</a><a role="tab" href="#g-risk">المخاطر</a><a role="tab" href="#g-src">المصادر</a><a role="tab" href="#g-about">عني</a></nav>
   <button class="iconbtn" id="theme" title="الوضع الفاتح أو الداكن" aria-label="تبديل الوضع الفاتح والداكن">◐</button>
 </div></div>
+<div class="nav-backdrop" id="navBackdrop"></div>
 <div class="hero tabpanel" id="g-overview" role="tabpanel"><div class="in">
   <h1>الرمل الجنوبي – اللاذقية</h1>
   <p class="byline">إعداد وتصميم: <a class="byline-link" href="#g-about"><b>عمر حمامة</b></a></p>
@@ -1120,8 +1152,16 @@ new MutationObserver(ms => ms.forEach(m => { const el = m.target;
   const links = [...document.querySelectorAll("#nav a")];
   const panels = [...document.querySelectorAll(".tabpanel")];
   const main = document.querySelector("main");
+  const topbar = document.querySelector(".topbar"), menuBtn = document.getElementById("menuBtn");
+  const setMenu = open => { topbar.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", open); };
+  menuBtn.addEventListener("click", () => setMenu(!topbar.classList.contains("open")));
+  document.getElementById("navBackdrop").addEventListener("click", () => setMenu(false));
+  addEventListener("keydown", e => { if (e.key === "Escape") setMenu(false); });
   function activate(id, target, push){
     const panel = document.getElementById(id) || panels[0];
+    setMenu(false);
+    const cur = links.find(a => a.getAttribute("href") === "#" + panel.id);
+    document.getElementById("curTab").textContent = cur ? cur.textContent : "";
     panels.forEach(p => p.hidden = p !== panel);
     loadPanelImages(panel);
     main.classList.toggle("first", panel.id === "g-overview");
