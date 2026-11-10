@@ -4,29 +4,37 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="عمر حمامة">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <title>الرمل الجنوبي – اللاذقية</title>
 <style>
+/*__FONTS__*/
 :root{
-  --bg:#f4f2ec; --card:#ffffff; --ink:#1c2126; --muted:#5b636c; --line:#e4dfd4;
-  --accent:#1d6a86; --accent-ink:#ffffff; --warn:#a4541a; --good:#2f7d3b; --bar:#3a86a8; --bar2:#a9cfdf;
-  --chip:#eef3f5; --hero1:#0f3b4c; --hero2:#1d6a86; --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 14px rgba(0,0,0,.05);
-  --osm-bg:#f3efe6; --osm-bld:#b9a68f; --osm-road:#ffffff;
+  --bg:#f6f4ef; --card:#fffdf9; --ink:#2a2f33; --muted:#6d747a; --line:#e8e2d7;
+  --accent:#3d7a86; --accent-ink:#ffffff; --accent-soft:#e4eff0;
+  --warn:#b2724e; --good:#5e8c63; --bar:#7aa9b4; --bar2:#cfe0e3;
+  --chip:#f1efe9; --hero1:#3a666e; --hero2:#6a9a96;
+  --shadow:0 1px 2px rgba(70,55,35,.05),0 6px 20px rgba(70,55,35,.06);
+  --shadow-hover:0 4px 10px rgba(70,55,35,.08),0 16px 34px rgba(70,55,35,.10);
+  --osm-bg:#f2eee5; --osm-bld:#cbbca6; --osm-road:#ffffff;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#121518; --card:#1b1f24; --ink:#e7e9ec; --muted:#a2a9b1; --line:#2d333a;
-    --accent:#6cb6d4; --accent-ink:#0d1a20; --warn:#e3995c; --good:#77c084; --bar:#5aa9cc; --bar2:#2d5568; --chip:#232b33;
-    --hero1:#0b2530; --hero2:#134a5e; --shadow:none;
-    --osm-bg:#1b1f24; --osm-bld:#6b5d4f; --osm-road:#3a4048;
+    --bg:#161a1d; --card:#1e2327; --ink:#e3e5e6; --muted:#9ba3a9; --line:#2d3439;
+    --accent:#86bcc6; --accent-ink:#13242a; --accent-soft:#23363b;
+    --warn:#d9a07c; --good:#94bf97; --bar:#6ea6b4; --bar2:#2f4a52;
+    --chip:#252b30; --hero1:#1f393f; --hero2:#2f5658;
+    --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-hover:0 10px 28px rgba(0,0,0,.4);
+    --osm-bg:#1c2125; --osm-bld:#5f5446; --osm-road:#363d43;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#121518; --card:#1b1f24; --ink:#e7e9ec; --muted:#a2a9b1; --line:#2d333a;
-  --accent:#6cb6d4; --accent-ink:#0d1a20; --warn:#e3995c; --good:#77c084; --bar:#5aa9cc; --bar2:#2d5568; --chip:#232b33;
-  --hero1:#0b2530; --hero2:#134a5e; --shadow:none;
-  --osm-bg:#1b1f24; --osm-bld:#6b5d4f; --osm-road:#3a4048;
+  --bg:#161a1d; --card:#1e2327; --ink:#e3e5e6; --muted:#9ba3a9; --line:#2d3439;
+  --accent:#86bcc6; --accent-ink:#13242a; --accent-soft:#23363b;
+  --warn:#d9a07c; --good:#94bf97; --bar:#6ea6b4; --bar2:#2f4a52;
+  --chip:#252b30; --hero1:#1f393f; --hero2:#2f5658;
+  --shadow:0 1px 2px rgba(0,0,0,.3); --shadow-hover:0 10px 28px rgba(0,0,0,.4);
+  --osm-bg:#1c2125; --osm-bld:#5f5446; --osm-road:#363d43;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:64px}
@@ -126,6 +134,69 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
   .fact b{font-size:1.25rem}
 }
 @media print{.topbar,.totop,.controls input{display:none}.card{break-inside:avoid;box-shadow:none}details.basis{display:block}}
+
+/* ---- typography ---- */
+body{font-family:"Plex Arabic","IBM Plex Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;font-size:16.5px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern"}
+h1,h2,h3,h4,b,strong,.brand,th{font-weight:600}
+h2{font-size:1.4rem;line-height:1.5}
+h3{font-size:1.02rem;color:var(--muted);font-weight:600}
+.card p,.card li{max-width:78ch;color:color-mix(in srgb,var(--ink) 90%,var(--muted))}
+.stat b,.fact b,td b{font-variant-numeric:tabular-nums}
+::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+/* ---- surfaces ---- */
+.hero{background:radial-gradient(900px 380px at 88% -20%,rgba(255,255,255,.16),transparent 60%),
+  radial-gradient(700px 300px at 0% 120%,rgba(0,0,0,.12),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2))}
+.card{border-radius:18px;box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--line) 80%,transparent);
+  transition:box-shadow .3s ease,border-color .3s ease}
+.card:hover{box-shadow:var(--shadow-hover);border-color:color-mix(in srgb,var(--accent) 25%,var(--line))}
+.stat{border-radius:14px;transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+.stat:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover);background:var(--accent-soft)}
+.fact{border-radius:14px;transition:transform .25s ease,background .25s ease,box-shadow .25s ease}
+.fact:hover{transform:translateY(-4px);background:rgba(255,255,255,.22);box-shadow:0 12px 28px rgba(0,0,0,.18)}
+.mapwrap{box-shadow:0 0 0 1px var(--line);border-radius:14px}
+.mapwrap img{transition:opacity .35s ease}
+.group i{box-shadow:0 0 0 4px var(--accent-soft)}
+/* ---- interactive elements ---- */
+a{transition:color .2s ease}
+.nav a{transition:background .25s ease,color .25s ease}
+.controls button,button{transition:background .25s ease,color .25s ease,transform .15s ease}
+.controls button:hover:not([aria-pressed="true"]){background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.controls button:active{transform:scale(.97)}
+.iconbtn{transition:transform .5s ease,background .25s ease}
+#theme:hover{transform:rotate(180deg)}
+.totop:hover{transform:translateY(-3px)}
+tbody tr{transition:background .2s ease}
+tbody tr:hover{background:var(--chip)}
+.osm-group li{transition:background .2s ease}
+details.basis summary{transition:color .2s ease}
+details.basis summary:hover{color:var(--accent)}
+input[type=range]{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+/* ---- animations ---- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.tabpanel:not([hidden])>*{animation:fadeUp .5s ease both}
+.tabpanel:not([hidden])>*:nth-child(2){animation-delay:.06s}
+.tabpanel:not([hidden])>*:nth-child(3){animation-delay:.12s}
+.tabpanel:not([hidden])>*:nth-child(4){animation-delay:.18s}
+.tabpanel:not([hidden])>*:nth-child(n+5){animation-delay:.24s}
+.hero .in>*{animation:fadeUp .6s ease both}
+.hero .in>*:nth-child(2){animation-delay:.08s}
+.hero .in>*:nth-child(3){animation-delay:.16s}
+.facts .fact{animation:fadeUp .55s ease both}
+.facts .fact:nth-child(2){animation-delay:.25s}.facts .fact:nth-child(3){animation-delay:.3s}
+.facts .fact:nth-child(4){animation-delay:.35s}.facts .fact:nth-child(5){animation-delay:.4s}
+.facts .fact:nth-child(6){animation-delay:.45s}.facts .fact:nth-child(7){animation-delay:.5s}
+.facts .fact:nth-child(n+8){animation-delay:.55s}
+svg[id$="Chart"] rect,#rainYears rect{transform-box:fill-box;transform-origin:50% 100%;animation:grow .8s cubic-bezier(.2,.7,.2,1) both}
+.hood-ol,.hood-ol-osm{animation:fadeIn .8s ease .2s both}
+details.basis[open] .body{animation:fadeUp .35s ease both}
+.osm-tip{animation:fadeIn .15s ease both}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
 </style>
 </head>
 <body>
@@ -739,6 +810,12 @@ if (!NO2.years.length) {
   const showNo2 = () => { const y = Y[+r.value]; im.src = y.img; document.getElementById("no2yrLabel").textContent = y.year; };
   r.oninput = showNo2; showNo2();
 }
+
+// soft fade whenever a map image changes
+new MutationObserver(ms => ms.forEach(m => { const el = m.target;
+  if (el.animate && !matchMedia("(prefers-reduced-motion: reduce)").matches)
+    el.animate([{opacity: .35}, {opacity: 1}], {duration: 350, easing: "ease-out"}); }))
+  .observe(document.body, {subtree: true, attributes: true, attributeFilter: ["src"]});
 
 // ---- page chrome: summary facts, collapsible basis notes, navigation, theme ----
 (function(){

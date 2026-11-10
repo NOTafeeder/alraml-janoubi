@@ -60,19 +60,25 @@ DATA = DATA.replace("<", "\\u003c")
 HTML = r"""<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>رسم حدود الحي</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <style>
-:root{--bg:#f4f2ec;--card:#fff;--ink:#1c2126;--muted:#5b636c;--line:#e4dfd4;--accent:#1d6a86;--chip:#eef3f5}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121518;--card:#1b1f24;--ink:#e7e9ec;--muted:#a2a9b1;--line:#2d333a;--accent:#6cb6d4;--chip:#232b33}}
-:root[data-theme="dark"]{--bg:#121518;--card:#1b1f24;--ink:#e7e9ec;--muted:#a2a9b1;--line:#2d333a;--accent:#6cb6d4;--chip:#232b33}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+"__FONTS__"
+:root{--bg:#f6f4ef;--card:#fffdf9;--ink:#2a2f33;--muted:#6d747a;--line:#e8e2d7;--accent:#3d7a86;--accent-ink:#fff;--chip:#f1efe9;
+  --shadow:0 1px 2px rgba(70,55,35,.05),0 6px 20px rgba(70,55,35,.06)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#161a1d;--card:#1e2327;--ink:#e3e5e6;--muted:#9ba3a9;--line:#2d3439;--accent:#86bcc6;--accent-ink:#13242a;--chip:#252b30;--shadow:0 1px 2px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--bg:#161a1d;--card:#1e2327;--ink:#e3e5e6;--muted:#9ba3a9;--line:#2d3439;--accent:#86bcc6;--accent-ink:#13242a;--chip:#252b30;--shadow:0 1px 2px rgba(0,0,0,.3)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plex Arabic","Segoe UI",Tahoma,Arial,sans-serif;line-height:1.85;font-size:16px;-webkit-font-smoothing:antialiased}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main>*{animation:fadeUp .5s ease both}main>*:nth-child(2){animation-delay:.06s}main>*:nth-child(3){animation-delay:.12s}main>*:nth-child(4){animation-delay:.18s}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 main{max-width:1100px;margin:0 auto;padding:16px}
 h1{font-size:1.5rem;margin:4px 0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:14px 0;box-shadow:var(--shadow)}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
-button{font:inherit;border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer}
-button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button{font:inherit;border:1px solid var(--line);background:var(--chip);color:var(--ink);border-radius:999px;padding:5px 14px;cursor:pointer;transition:background .25s,transform .15s,box-shadow .25s}
+button:hover{background:color-mix(in srgb,var(--accent) 14%,var(--chip))}button:active{transform:scale(.97)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}button.primary:hover{box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
 label{font-size:.9rem;color:var(--muted)}
 #wrap{position:relative;width:100%;aspect-ratio:__W__/__H__;border-radius:10px;overflow:visible;background:#000;cursor:crosshair;touch-action:none}
 #wrap img{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
@@ -168,6 +174,7 @@ document.getElementById("save").onclick = () => {
 };
 draw();
 </script></body></html>"""
-html = HTML.replace("__DATA__", DATA).replace("__W__", str(W)).replace("__H__", str(H))
+from style_fonts import font_css
+html = HTML.replace('"__FONTS__"', font_css()).replace("__DATA__", DATA).replace("__W__", str(W)).replace("__H__", str(H))
 (R / "draw_boundary.html").write_text(html, encoding="utf-8")
 print("wrote draw_boundary.html", round(len(html) / 1e6, 2), "MB", len(roads), "roads", len(pois), "pois")

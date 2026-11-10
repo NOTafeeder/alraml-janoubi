@@ -117,6 +117,8 @@ if (ROOT / "data_extra" / "boundary_A.geojson").exists():
 
 w, h = Image.open(next(OUT.glob("*/rgb_*.png"))).size
 html = (ROOT / "template.html").read_text(encoding="utf-8")
+from style_fonts import font_css
+html = html.replace("/*__FONTS__*/", font_css())
 def js(o, **kw):
     """JSON for inside <script>: '<' is escaped so data can never close the tag"""
     out = json.dumps(o, **kw).replace("<", "\\u003c")
