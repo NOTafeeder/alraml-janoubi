@@ -108,3 +108,20 @@ check(1 < min(hv) and max(hv) < 100, f"night lights inside hood A {min(hv)}-{max
 
 fails = [r for r in res if r[0] == "FAIL"]; warns = [r for r in res if r[0] == "WARN"]
 print(f"\n{len([r for r in res if r[0]=='PASS'])} passed, {len(fails)} failed, {len(warns)} warnings")
+
+# 8. text claims written by hand in the page
+mid = [y["veg_pct"] for y in YEARS if y["year"] not in (2017, 2020)]
+check(33 <= min(mid) and max(mid) <= 37.5, f"text 'most years 33-37% green': {min(mid)}-{max(mid)}")
+g = {y["year"]: y["veg_pct"] for y in YEARS}
+check(g[2020] == max(g.values()) and g[2017] == min(g.values()), "text '2020 highest, 2017 lowest green share'")
+check(abs(EXTRA["hood"]["B"]["night_cells"] - 26) <= 1, f"text 'about 26 night-light cells': {EXTRA['hood']['B']['night_cells']}")
+
+# 9. security: no data can close the script tag, outside text is escaped, nothing loads from outside
+import re as _re
+scripts = _re.findall(r"<script>(.*?)</script>", html, _re.S)
+check(len(scripts) == 1, f"exactly one inline script ({len(scripts)})")
+check("Content-Security-Policy" in html and "default-src 'none'" in html, "Content-Security-Policy blocks outside resources")
+check(not _re.search(r"<(script|link|iframe)[^>]+(src|href)=\"https?:", html), "no external scripts, styles or frames")
+check("esc(p.n)" in html and "esc(s.street)" in html and "esc(p.landmark.name)" in html, "OpenStreetMap names are escaped before insertion")
+fails = [r for r in res if r[0] == "FAIL"]; warns = [r for r in res if r[0] == "WARN"]
+print(f"\nTOTAL {len([r for r in res if r[0]=='PASS'])} passed, {len(fails)} failed, {len(warns)} warnings")

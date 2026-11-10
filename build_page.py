@@ -117,6 +117,10 @@ if (ROOT / "data_extra" / "boundary_A.geojson").exists():
 
 w, h = Image.open(next(OUT.glob("*/rgb_*.png"))).size
 html = (ROOT / "template.html").read_text(encoding="utf-8")
-html = html.replace("__YEARS__", json.dumps(years)).replace("__NO2__", json.dumps(no2)).replace("__EXTRA__", json.dumps(extra, ensure_ascii=False)).replace("__W__", str(w)).replace("__H__", str(h))
+def js(o, **kw):
+    """JSON for inside <script>: '<' is escaped so data can never close the tag"""
+    out = json.dumps(o, **kw).replace("<", "\\u003c")
+    return out.replace(chr(0x2028), "\\u2028").replace(chr(0x2029), "\\u2029")
+html = html.replace("__YEARS__", js(years)).replace("__NO2__", js(no2)).replace("__EXTRA__", js(extra, ensure_ascii=False)).replace("__W__", str(w)).replace("__H__", str(h))
 (ROOT / "alraml.html").write_text(html, encoding="utf-8")
 print("wrote alraml.html", round(len(html) / 1e6, 2), "MB")

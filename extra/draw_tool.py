@@ -55,9 +55,13 @@ if dp.exists():
     ring = json.loads(dp.read_text(encoding="utf-8"))["geometry"]["coordinates"][0][:-1]
     draft = [list(to_px(lo, la)) for lo, la in ring]
 DATA = json.dumps({"img": img, "w": W, "h": H, "cl": cl, "ct": ct, "roads": roads, "pois": pois, "draft": draft}, ensure_ascii=False)
+# never let data close the <script> tag
+DATA = DATA.replace("<", "\\u003c")
 HTML = r"""<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>رسم حدود الحي</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <style>
 :root{--bg:#f4f2ec;--card:#fff;--ink:#1c2126;--muted:#5b636c;--line:#e4dfd4;--accent:#1d6a86;--chip:#eef3f5}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#121518;--card:#1b1f24;--ink:#e7e9ec;--muted:#a2a9b1;--line:#2d333a;--accent:#6cb6d4;--chip:#232b33}}

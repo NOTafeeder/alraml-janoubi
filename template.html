@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="عمر حمامة">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <title>الرمل الجنوبي – اللاذقية</title>
 <style>
 :root{
@@ -182,7 +184,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
   <div class="grid" id="landStats"></div>
   <h3>نسبة الأرض الخضراء من اليابسة في الصورة</h3>
   <svg id="vegChart" viewBox="0 0 640 220" width="100%" role="img" aria-label="نسبة الأرض الخضراء لكل سنة"></svg>
-  <div class="basis">كيف حُسب: لكل بكسل يابسة حسبنا NDVI = (NIR − أحمر) / (NIR + أحمر). أكثر من 0.3 يُعدّ «أخضر»، وما تحته «مبانٍ أو أرض جرداء». الماء يُستبعد أولاً. الحساب لكل منطقة الصورة (تشمل أراضي زراعية شرق النهر)، لا لحدود الحي الإدارية. التاريخ يختلف بين السنوات (أيار–أيلول)، فجزء من الفرق موسمي وليس تغيّراً حقيقياً. في أغلب السنوات النسبة بين 38 و41٪ تقريباً، ولا نرى اتجاهاً واضحاً. 2020 أعلى (صورة أيار، حين تكون المحاصيل خضراء) و2017 أقل؛ لم نتحقق إن كان ذلك تغيّراً فعلياً في الأرض أم أثر التاريخ والطقس. الماء محدّد بانعكاس منخفض جداً للأشعة تحت الحمراء (NIR أقل من 0.06).<span class="conf mid">ثقة متوسطة</span></div>
+  <div class="basis">كيف حُسب: لكل بكسل يابسة حسبنا NDVI = (NIR − أحمر) / (NIR + أحمر). أكثر من 0.3 يُعدّ «أخضر»، وما تحته «مبانٍ أو أرض جرداء». الماء يُستبعد أولاً. الحساب لكل منطقة الصورة (تشمل أراضي زراعية شرق النهر)، لا لحدود الحي الإدارية. التاريخ يختلف بين السنوات (أيار–أيلول)، فجزء من الفرق موسمي وليس تغيّراً حقيقياً. في أغلب السنوات النسبة بين 33 و37٪ تقريباً، ولا نرى اتجاهاً واضحاً. 2020 أعلى (صورة أيار، حين تكون المحاصيل خضراء) و2017 أقل؛ لم نتحقق إن كان ذلك تغيّراً فعلياً في الأرض أم أثر التاريخ والطقس. الماء محدّد بانعكاس منخفض جداً للأشعة تحت الحمراء (NIR أقل من 0.06).<span class="conf mid">ثقة متوسطة</span></div>
 </section>
 
 </div>
@@ -342,7 +344,7 @@ footer{max-width:1100px;margin:0 auto;padding:0 16px 40px;color:var(--muted);fon
     <span><i class="sw" style="border:2px solid #fff;box-shadow:0 0 0 2px #000;border-radius:50%"></i>الرمل الجنوبي</span>
   </div>
   <p>الضوء ليلاً يعكس الكهرباء والنشاط: الشوارع والبيوت والمحلات والميناء. انخفاضه في سوريا يرتبط عادة بانقطاع الكهرباء ونقص الوقود، لا بقلة السكان وحدها.</p>
-  <div class="basis">يبني على: منتج Black Marble السنوي من ناسا (VNP46A4، الإصدار 2، المجموعة 5200)، من القمر Suomi-NPP/VIIRS، بدقة نحو 500 م، مركّب «كل الزوايا، بلا ثلج» بعد إزالة الغيوم وضوء القمر. الوحدة نانوواط/سم²/ستيراديان. منطقة الحي صغيرة (نحو 8 × 6 خلايا)، فالقيمة تشمل الأحياء المجاورة.<span class="conf high">ثقة عالية</span></div>
+  <div class="basis">يبني على: منتج Black Marble السنوي من ناسا (VNP46A4، الإصدار 2، المجموعة 5200)، من القمر Suomi-NPP/VIIRS، بدقة نحو 500 م، مركّب «كل الزوايا، بلا ثلج» بعد إزالة الغيوم وضوء القمر. الوحدة نانوواط/سم²/ستيراديان. حدود الحي تضم نحو 26 خلية فقط، فالقيمة تشمل الأحياء المجاورة.<span class="conf high">ثقة عالية</span></div>
 </section>
 
 </div>
@@ -397,6 +399,8 @@ const EXTRA = __EXTRA__;
 const HA0 = (EXTRA.hood || {}).B;   // the whole neighbourhood (al-Quds included), used next to study-area numbers
 const MONTHS = ["كانون2","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين1","تشرين2","كانون1"];
 const fmt = n => n.toLocaleString("ar-SY");
+// text from outside sources (OpenStreetMap names) is always escaped before it goes into HTML
+const esc = v => String(v == null ? "" : v).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
 
 let mode = "rgb", idx = YEARS.length - 1;
 const img = document.getElementById("img"), yr = document.getElementById("yr");
@@ -647,16 +651,16 @@ if (!hideIf("osm", !EXTRA.osm)) {
   GROUPS.forEach(([g]) => O.points.filter(p => p.c === g)
     .sort((a, b) => (!a.n - !b.n) || a.n.localeCompare(b.n, "ar")).forEach(p => pts.push(p)));
   pts.forEach((p, i) => p.i = i + 1);
-  const label = p => p.n || `${KIND[p.k] || p.k} (بلا اسم في الخريطة)`;
+  const label = p => p.n ? esc(p.n) : `${KIND[p.k] || esc(p.k)} (بلا اسم في الخريطة)`;
   // where an unnamed place is: nearest named streets and landmark, plus a link to edit it on OpenStreetMap
   const where = p => {
     if (p.n) return "";
-    const bits = (p.near || []).map(s => `${s.street} (${fmt(s.m)} م)`);
+    const bits = (p.near || []).map(s => `${esc(s.street)} (${fmt(s.m)} م)`);
     let t = bits.length ? `قرب ${bits.join(" و")}` : "لا يوجد شارع مسمّى في الخريطة على بعد 400 م";
-    if (p.landmark) t += `؛ أقرب مرفق مسمّى: ${p.landmark.name} (${fmt(p.landmark.m)} م)`;
+    if (p.landmark) t += `؛ أقرب مرفق مسمّى: ${esc(p.landmark.name)} (${fmt(p.landmark.m)} م)`;
     if (p.landmark && p.landmark.same_kind && p.landmark.m <= 30)
-      t += ` — <b>على الأرجح هو نفسه «${p.landmark.name}»</b>، مرسوماً في الخريطة مرتين: مرة باسمه ومرة دون اسم`;
-    return `<span class="where">${t}. <a href="https://www.openstreetmap.org/${p.osm}" target="_blank" rel="noopener">افتحه في OpenStreetMap</a> · ${p.lat.toFixed(5)}، ${p.lon.toFixed(5)}</span>`;
+      t += ` — <b>على الأرجح هو نفسه «${esc(p.landmark.name)}»</b>، مرسوماً في الخريطة مرتين: مرة باسمه ومرة دون اسم`;
+    return `<span class="where">${t}. <a href="https://www.openstreetmap.org/${encodeURI(String(p.osm).replace(/[^a-z0-9\/]/g, ""))}" target="_blank" rel="noopener">افتحه في OpenStreetMap</a> · ${Number(p.lat).toFixed(5)}، ${Number(p.lon).toFixed(5)}</span>`;
   };
   const dots = pts.map(p => `<g class="poi" data-i="${p.i}" tabindex="0"><circle cx="${p.x}" cy="${p.y}" r="8.5" fill="${col[p.c]}" stroke="#fff" stroke-width="1.5"/>` +
     `<text x="${p.x}" y="${p.y + 3.2}" text-anchor="middle" style="fill:#fff;font-size:8.5px;font-weight:700;pointer-events:none">${p.i}</text><title>${p.i}. ${label(p)} — ${KIND[p.k]}</title></g>`).join("");
